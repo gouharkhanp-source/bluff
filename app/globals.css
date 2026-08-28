@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Luckiest+Guy&family=Fredoka:wght@400;500;600;700&family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -38,7 +38,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Fredoka', 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -53,7 +53,7 @@
 }
 
 @layer utilities {
-  .font-display { font-family: 'Anton', 'Oswald', sans-serif; letter-spacing: 0.01em; }
+  .font-display { font-family: 'Luckiest Guy', 'Anton', cursive; letter-spacing: 0.02em; }
   .font-cond { font-family: 'Oswald', sans-serif; }
   .perspective { perspective: 1400px; }
   .preserve-3d { transform-style: preserve-3d; }
@@ -105,3 +105,36 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- PLAYFUL / FUNKY ---------- */
+@keyframes wiggle { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes bobble { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-9px) rotate(2deg); } }
+@keyframes popin { 0% { transform: scale(.8) rotate(-6deg); opacity: 0; } 70% { transform: scale(1.06) rotate(2deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+
+.anim-wiggle { animation: wiggle 2.6s ease-in-out infinite; transform-origin: center; }
+.anim-bobble { animation: bobble 4s ease-in-out infinite; }
+.hover-wiggle:hover { animation: wiggle .45s ease-in-out; }
+
+.btn-pop {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border-radius: 9999px;
+  border: 2.5px solid #0f1e3d;
+  box-shadow: 4px 4px 0 0 #0f1e3d;
+  transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease;
+}
+.btn-pop:hover { transform: translate(-2px,-2px) rotate(-1.5deg); box-shadow: 7px 7px 0 0 #0f1e3d; }
+.btn-pop:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 0 #0f1e3d; }
+
+.sticker {
+  border: 2.5px solid #0f1e3d;
+  border-radius: 9999px;
+  box-shadow: 3px 3px 0 0 #0f1e3d;
+  transform: rotate(-3deg);
+}
+.marker {
+  background-image: linear-gradient(100deg, rgba(255,210,63,0) 0.5%, #ffd23f 2%, #ffd23f 96%, rgba(255,210,63,0) 99.5%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  padding: 0 .14em; border-radius: .12em; color: #0f1e3d;
+}
+.card-tilt { transition: transform .25s ease; }
+.card-tilt:hover { transform: rotate(-3deg) scale(1.05); }

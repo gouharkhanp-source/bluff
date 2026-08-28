@@ -56,7 +56,7 @@ export default function Play() {
                   ))}
                 </div>
               </div>
-              <button onClick={join} disabled={code.length !== 4 || !name.trim()} className="w-full label text-xs font-semibold py-4 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors disabled:opacity-40">JOIN LOBBY</button>
+              <button onClick={join} disabled={code.length !== 4 || !name.trim()} className="w-full label text-xs font-semibold py-4 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors disabled:opacity-40">JOIN LOBBY</button>
               <p className="text-center label text-[9px] text-exit-cream/30">FRONT-END PROTOTYPE — REAL-TIME MULTIPLAYER CONNECTS LATER</p>
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function Play() {
 
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
               <button onClick={() => { setTurn((t) => t + 1); playShuffle() }} className="label text-[11px] px-6 py-3 rounded-md border border-slate-900/10 hover:border-slate-900/25 transition-colors">END TURN</button>
-              <button onClick={() => setShowChallenge(true)} className="label text-[11px] font-semibold px-6 py-3 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">TRIGGER CHALLENGE</button>
+              <button onClick={() => setShowChallenge(true)} className="label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">TRIGGER CHALLENGE</button>
             </div>
           </div>
 

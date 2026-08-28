@@ -66,7 +66,7 @@ export default function Rules() {
             <div className="rounded-2xl border border-exit-red/30 bg-exit-red/5 p-8 text-center">
               <div className="label text-[10px] text-exit-red">THE GOLDEN RULE</div>
               <p className="font-display text-2xl md:text-3xl mt-2">PLAY YOUR CARDS. COMPLETE YOUR FORMATION. REACH THE EXIT.</p>
-              <Link href="/play" className="mt-6 inline-flex items-center gap-2 label text-xs font-semibold px-7 py-3 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">PLAY NOW <ArrowRight size={15} /></Link>
+              <Link href="/play" className="mt-6 inline-flex items-center gap-2 label text-xs font-semibold px-7 py-3 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">PLAY NOW <ArrowRight size={15} /></Link>
             </div>
           </Reveal>
         </div>

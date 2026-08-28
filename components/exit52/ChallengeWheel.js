@@ -58,7 +58,7 @@ export default function ChallengeWheel() {
       <button
         onClick={spin}
         disabled={spinning}
-        className="mt-8 label text-xs font-semibold px-8 h-12 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors disabled:opacity-60"
+        className="mt-8 label text-xs font-semibold px-8 h-12 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors disabled:opacity-60"
       >
         {spinning ? 'SPINNING...' : 'SPIN THE CHALLENGE'}
       </button>

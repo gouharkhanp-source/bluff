@@ -200,9 +200,9 @@ export default function PreBook() {
               <div className="mt-8 flex justify-between">
                 <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="inline-flex items-center gap-2 label text-[11px] px-5 py-3 rounded-md border border-slate-900/10 disabled:opacity-30"><ArrowLeft size={14} /> BACK</button>
                 {step < 4 ? (
-                  <button onClick={() => canNext() && setStep((s) => s + 1)} disabled={!canNext()} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 rounded-md bg-exit-red text-white disabled:opacity-40">NEXT <ArrowRight size={14} /></button>
+                  <button onClick={() => canNext() && setStep((s) => s + 1)} disabled={!canNext()} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white disabled:opacity-40">NEXT <ArrowRight size={14} /></button>
                 ) : (
-                  <button onClick={submit} disabled={submitting} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 rounded-md bg-exit-red text-white disabled:opacity-60">{submitting ? 'RESERVING...' : 'CONFIRM YOUR EXIT'} <Check size={14} /></button>
+                  <button onClick={submit} disabled={submitting} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white disabled:opacity-60">{submitting ? 'RESERVING...' : 'CONFIRM YOUR EXIT'} <Check size={14} /></button>
                 )}
               </div>
             </div>

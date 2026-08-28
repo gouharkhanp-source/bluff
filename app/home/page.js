@@ -12,7 +12,7 @@ import { CARD_TYPES, GAME_MODES, SPECIAL_CARDS, POWER_CARDS, WIN_RULES } from '@
 import SpecialCard from '@/components/exit52/SpecialCard'
 import WinRuleCard from '@/components/exit52/WinRuleCard'
 import { track, EVENTS } from '@/lib/exit52/analytics'
-import { ArrowRight, Zap, Users, Wifi } from 'lucide-react'
+import { ArrowRight, Zap, Users, Wifi, Star, Sparkles } from 'lucide-react'
 
 function FlowStep({ label, sub }) {
   return (
@@ -35,23 +35,26 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/80 via-exit-black/70 to-exit-black" />
         <div className="absolute inset-0 bg-gradient-to-r from-exit-black via-exit-black/40 to-transparent" />
         <FallingCards count={12} />
+        <Star className="absolute top-28 right-12 text-exit-yellow anim-wiggle hidden md:block z-[1]" size={44} fill="#ffd23f" strokeWidth={1.5} />
+        <Sparkles className="absolute bottom-28 left-8 text-exit-pink anim-bobble hidden md:block z-[1]" size={38} />
+        <Star className="absolute top-1/2 left-1/3 text-exit-teal anim-bobble hidden lg:block z-[1]" size={22} fill="#1fc3b6" strokeWidth={1.5} />
 
         <div className="container relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center py-20">
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <span className="inline-block label text-[10px] text-exit-red border border-exit-red/40 rounded-full px-3 py-1 mb-6">THE BLUFFING CARD GAME</span>
-              <h1 className="font-display text-6xl sm:text-7xl md:text-8xl leading-[0.86]">
-                PLAY YOUR<br />CARDS.<br />
+              <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-6">THE BLUFFING CARD GAME</span>
+              <h1 className="font-display text-6xl sm:text-6xl md:text-7xl leading-[0.95]">
+                PLAY YOUR<br /><span className="marker">CARDS.</span><br />
                 <span className="text-exit-red text-glow">FIND YOUR EXIT.</span>
               </h1>
               <p className="mt-6 max-w-md text-base md:text-lg text-exit-cream/60">
                 A fast-paced bluffing card game where you match your way out — or face the Challenge.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'hero' })} className="group inline-flex items-center gap-2 label text-xs font-semibold px-7 h-13 py-4 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">
+                <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'hero' })} className="group inline-flex items-center gap-2 label text-xs font-semibold px-7 h-13 py-4 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">
                   PLAY FREE ONLINE <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/prebook" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 rounded-md border border-exit-cream/30 text-exit-cream hover:border-exit-cream hover:bg-slate-900/[0.03] transition-colors">
+                <Link href="/prebook" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 rounded-full border-2 border-exit-ink/60 text-exit-cream hover:border-exit-cream hover:bg-slate-900/[0.03] transition-colors">
                   PRE-BOOK THE DECK
                 </Link>
               </div>
@@ -269,8 +272,8 @@ export default function HomePage() {
             <h2 className="font-display text-5xl md:text-7xl leading-none">READY TO <span className="text-exit-red text-glow">EXIT?</span></h2>
             <p className="mt-4 text-exit-cream/60 max-w-lg mx-auto">Jump into a free browser game, or reserve your deck from the first production batch.</p>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
-              <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'cta_band' })} className="label text-xs font-semibold px-8 py-4 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">PLAY FREE ONLINE</Link>
-              <Link href="/editions" className="label text-xs px-8 py-4 rounded-md border border-exit-cream/30 hover:border-exit-cream transition-colors">VIEW EDITIONS</Link>
+              <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'cta_band' })} className="label text-xs font-semibold px-8 py-4 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">PLAY FREE ONLINE</Link>
+              <Link href="/editions" className="label text-xs px-8 py-4 rounded-full border-2 border-exit-ink/60 hover:border-exit-cream transition-colors">VIEW EDITIONS</Link>
             </div>
           </Reveal>
         </div>

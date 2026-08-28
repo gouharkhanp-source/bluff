@@ -45,7 +45,7 @@ export default function Editions() {
                   ))}
                 </ul>
                 <Link href={`/prebook?edition=${e.id}`} onClick={() => track(EVENTS.editionSelect, { edition: e.id })}
-                  className="mt-6 text-center label text-[11px] font-semibold py-3 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">
+                  className="mt-6 text-center label text-[11px] font-semibold py-3 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">
                   {e.cta}
                 </Link>
               </div>

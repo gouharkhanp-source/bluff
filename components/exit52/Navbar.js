@@ -63,14 +63,14 @@ export default function Navbar() {
           <Link
             href="/play"
             onClick={() => track(EVENTS.playFree, { from: 'navbar' })}
-            className="hidden sm:inline-flex items-center label text-[11px] font-semibold px-4 h-9 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors anim-pulseglow"
+            className="hidden sm:inline-flex items-center label text-[11px] font-semibold px-4 h-9 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors anim-pulseglow"
           >
             PLAY FREE
           </Link>
           <Link
             href="/prebook"
             onClick={() => track(EVENTS.preBook, { from: 'navbar' })}
-            className="hidden lg:inline-flex items-center label text-[11px] px-4 h-9 rounded-md border border-exit-cream/30 text-exit-cream hover:border-exit-cream transition-colors"
+            className="hidden lg:inline-flex items-center label text-[11px] px-4 h-9 rounded-full border-2 border-exit-ink/60 text-exit-cream hover:border-exit-cream transition-colors"
           >
             PRE-BOOK DECK
           </Link>
@@ -98,8 +98,8 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="flex gap-3 pt-2">
-              <Link href="/play" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs font-semibold py-3 rounded-md bg-exit-red text-white">PLAY FREE</Link>
-              <Link href="/prebook" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs py-3 rounded-md border border-exit-cream/30 text-exit-cream">PRE-BOOK</Link>
+              <Link href="/play" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs font-semibold py-3 btn-pop bg-exit-red text-white">PLAY FREE</Link>
+              <Link href="/prebook" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs py-3 rounded-full border-2 border-exit-ink/60 text-exit-cream">PRE-BOOK</Link>
             </div>
           </div>
         </div>

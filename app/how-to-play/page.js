@@ -87,7 +87,7 @@ export default function HowToPlay() {
               PLAY YOUR CARDS.<br />COMPLETE YOUR FORMATION.<br /><span className="text-exit-red text-glow">REACH THE EXIT.</span>
             </h2>
             <p className="mt-8 text-exit-cream/60">Think you&apos;ve got it?</p>
-            <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'how_to_play' })} className="mt-4 inline-flex items-center gap-2 label text-xs font-semibold px-8 py-4 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">
+            <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'how_to_play' })} className="mt-4 inline-flex items-center gap-2 label text-xs font-semibold px-8 py-4 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">
               LET&apos;S PLAY <ArrowRight size={16} />
             </Link>
           </Reveal>

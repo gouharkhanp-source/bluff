@@ -37,12 +37,15 @@ module.exports = {
           blue: '#3a30b8',
           navy: '#241b7e',
           paper: '#ffffff',
+          yellow: '#ffd23f',
+          pink: '#ff5da2',
+          teal: '#1fc3b6',
         },
       },
       fontFamily: {
-        display: ['Anton', 'Oswald', 'sans-serif'],
+        display: ['Luckiest Guy', 'Anton', 'cursive'],
         cond: ['Oswald', 'sans-serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Fredoka', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
       keyframes: {
