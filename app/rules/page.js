@@ -2,7 +2,10 @@
 import Link from 'next/link'
 import SiteShell from '@/components/exit52/SiteShell'
 import Reveal from '@/components/exit52/Reveal'
-import { HOW_TO_STEPS, CARD_TYPES } from '@/lib/exit52/data'
+import { HOW_TO_STEPS, CARD_TYPES, SPECIAL_CARDS, POWER_CARDS, WIN_RULES } from '@/lib/exit52/data'
+import { ASSETS } from '@/lib/exit52/images'
+import SpecialCard from '@/components/exit52/SpecialCard'
+import WinRuleCard from '@/components/exit52/WinRuleCard'
 import { ArrowRight } from 'lucide-react'
 
 export default function Rules() {
@@ -42,6 +45,22 @@ export default function Rules() {
                 </div>
               ))}
             </div>
+          </Reveal>
+          <Reveal>
+            <h2 className="font-display text-3xl mb-5">SABOTAGE CARDS</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {SPECIAL_CARDS.map((c) => (<SpecialCard key={c.id} card={c} />))}
+            </div>
+          </Reveal>
+          <Reveal>
+            <h2 className="font-display text-3xl mb-5">POWER CARDS</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {POWER_CARDS.map((c) => (<SpecialCard key={c.id} card={c} />))}
+            </div>
+          </Reveal>
+          <Reveal>
+            <h2 className="font-display text-3xl mb-5">WIN RULES</h2>
+            <img src={ASSETS.gameModesFan} alt="EXIT 52 win rules: Power Pair, Trio, Sequence and Pair" loading="lazy" className="w-full h-auto" />
           </Reveal>
           <Reveal>
             <div className="rounded-2xl border border-exit-red/30 bg-exit-red/5 p-8 text-center">

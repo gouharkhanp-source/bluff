@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,7 +18,7 @@
     --secondary-foreground: 222 47% 15%;
     --muted: 214 32% 95%;
     --muted-foreground: 220 15% 42%;
-    --accent: 221 83% 53%;
+    --accent: 246 59% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 354 76% 50%;
     --destructive-foreground: 0 0% 100%;
@@ -49,7 +49,7 @@
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: #eef1f7; }
   ::-webkit-scrollbar-thumb { background: #c2ccdd; border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: #e11d2a; }
+  ::-webkit-scrollbar-thumb:hover { background: #e8232b; }
 }
 
 @layer utilities {
@@ -59,7 +59,7 @@
   .preserve-3d { transform-style: preserve-3d; }
   .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
   .rotate-y-180 { transform: rotateY(180deg); }
-  .text-glow { text-shadow: 0 0 24px rgba(225,29,42,0.30); }
+  .text-glow { text-shadow: 0 0 24px rgba(232,35,43,0.32); }
   .text-glow-soft { text-shadow: 0 0 30px rgba(0,0,0,0.6); }
   .label { text-transform: uppercase; letter-spacing: 0.22em; }
   .grain::after {
@@ -75,7 +75,7 @@
     background-color: #0a1a3f;
     background-image:
       repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0, rgba(255,255,255,0.10) 2px, transparent 2px, transparent 9px),
-      repeating-linear-gradient(-45deg, rgba(225,29,42,0.32) 0, rgba(225,29,42,0.32) 2px, transparent 2px, transparent 9px);
+      repeating-linear-gradient(-45deg, rgba(232,35,43,0.32) 0, rgba(232,35,43,0.32) 2px, transparent 2px, transparent 9px);
   }
   .radial-fade {
     -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 78%);

@@ -7,8 +7,10 @@ import PlayingCard from '@/components/exit52/PlayingCard'
 import FallingCards from '@/components/exit52/FallingCards'
 import ChallengeWheel from '@/components/exit52/ChallengeWheel'
 import Reveal from '@/components/exit52/Reveal'
-import { IMAGES } from '@/lib/exit52/images'
-import { CARD_TYPES, GAME_MODES } from '@/lib/exit52/data'
+import { IMAGES, ASSETS } from '@/lib/exit52/images'
+import { CARD_TYPES, GAME_MODES, SPECIAL_CARDS, POWER_CARDS, WIN_RULES } from '@/lib/exit52/data'
+import SpecialCard from '@/components/exit52/SpecialCard'
+import WinRuleCard from '@/components/exit52/WinRuleCard'
 import { track, EVENTS } from '@/lib/exit52/analytics'
 import { ArrowRight, Zap, Users, Wifi } from 'lucide-react'
 
@@ -145,6 +147,55 @@ export default function HomePage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SABOTAGE CARDS */}
+      <section className="relative py-24 bg-[#16171b]">
+        <div className="container">
+          <Reveal>
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <h2 className="font-display text-4xl md:text-6xl leading-none text-white">THE <span className="text-exit-red">SABOTAGE CARDS.</span></h2>
+              <p className="label text-[10px] text-white/40">DISRUPT · INFECT · STEAL · SEAL</p>
+            </div>
+          </Reveal>
+          <div className="mt-12 flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory md:grid md:grid-cols-3 lg:grid-cols-5 md:overflow-visible">
+            {SPECIAL_CARDS.map((c, i) => (
+              <Reveal key={c.id} delay={i * 0.06} className="snap-center shrink-0 w-[220px] md:w-auto"><SpecialCard card={c} /></Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* POWER CARDS */}
+      <section className="relative py-24 bg-[#211a5e]">
+        <div className="container">
+          <Reveal>
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <h2 className="font-display text-4xl md:text-6xl leading-none text-white">THE <span className="text-[#b9b2ff]">POWER CARDS.</span></h2>
+              <p className="label text-[10px] text-white/40">YOUR ESCAPE PLAN</p>
+            </div>
+          </Reveal>
+          <div className="mt-12 flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory md:grid md:grid-cols-3 lg:grid-cols-5 md:overflow-visible">
+            {POWER_CARDS.map((c, i) => (
+              <Reveal key={c.id} delay={i * 0.06} className="snap-center shrink-0 w-[220px] md:w-auto"><SpecialCard card={c} /></Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WIN RULES */}
+      <section className="relative py-24 bg-white">
+        <div className="container">
+          <Reveal>
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <h2 className="font-display text-4xl md:text-6xl leading-none text-exit-ink">KNOW YOUR <span className="text-exit-red">WIN RULES.</span></h2>
+              <p className="label text-[10px] text-exit-ink/40">THE GAME SELECTOR DECIDES</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <img src={ASSETS.gameModesFan} alt="EXIT 52 win rules: Power Pair, Trio, Sequence and Pair game selector cards" loading="lazy" className="mt-12 w-full max-w-5xl mx-auto h-auto" />
+          </Reveal>
         </div>
       </section>
 
