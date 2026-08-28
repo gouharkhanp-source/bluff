@@ -166,26 +166,42 @@ backend:
         -comment: "✅ PASSED - Returns 200 with array of reservations. Correctly sorted by createdAt descending (newest first). No MongoDB _id fields in any reservation. Retrieved 1 reservation successfully with all fields intact (id, edition, name, email, shipping, deposit, code, createdAt)."
 
 frontend:
-  - task: "Full site (Entry Gate, Home, How-To, Explainer, Editions, Pre-Book, Play, FAQ, Rules, legal)"
+  - task: "Heading spacing / typography legibility (funky Luckiest Guy headings not congested)"
     implemented: true
-    working: "NA"
-    file: "app/*/page.js"
+    working: true
+    file: "app/globals.css, app/*/page.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "All 11 routes compile 200. Verified Entry Gate + Home visually via screenshots. Not yet formally UI tested (awaiting user permission)."
+        -comment: "User reported headline text looks congested after switching display font to 'Luckiest Guy'. Fix: loosened all tight line-heights (leading-none -> leading-[1.05], leading-[0.9]->[1.05], leading-[0.95]->[1.08]) across all pages and set .font-display line-height:1.06. Need to verify multi-line headings (Home hero 'PLAY YOUR / CARDS. / FIND YOUR EXIT.', 'NO APP. NO COMPLEX HARDWARE. JUST DEAL, PLAY & EXIT.', section H2s, How-To 'HOW EXIT 52 WORKS' / 'BUT THERE'S A CATCH...') are readable with no line overlap/clipping."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ TYPOGRAPHY SPACING FIX VERIFIED - Tested all 4 pages (/home, /how-to-play, /editions, /prebook) at desktop (1920x900) and mobile (390x844) viewports. All pages load HTTP 200, no console errors. PASS CRITERIA MET: (1) Home hero 'PLAY YOUR / CARDS. / FIND YOUR EXIT.' - clear vertical spacing, yellow marker behind 'CARDS.' has clear separation from 'FIND YOUR EXIT.' line below, no overlap. (2) Home section H2s 'THE SABOTAGE CARDS.', 'WIN THE CARDS. OR FACE THE CHALLENGE.' - excellent multi-line spacing. (3) How-to-play 'HOW EXIT 52 WORKS' and 'THE GOLDEN RULE' multi-line heading 'PLAY YOUR CARDS. / COMPLETE YOUR FORMATION. / REACH THE EXIT.' - clear line separation, no congestion. (4) Editions 'HOW DO YOU WANT TO EXIT?' - multi-line with good spacing. (5) Prebook 'YOUR EXIT IS WAITING.' and 'WHAT'S IN THE PACK.' - clear spacing. All multi-line headings render cleanly with no overlapping glyphs, no clipped descenders/ascenders. Line-height values (leading-[1.05], leading-[1.08], .font-display line-height:1.06) working perfectly. Typography fix is successful."
+
+  - task: "Full site (Entry Gate, Home, How-To, Explainer, Editions, Pre-Book, Play, FAQ, Rules, legal)"
+    implemented: true
+    working: "NA"
+    file: "app/*/page.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "All 11 routes compile 200. Verified Entry Gate + Home visually via screenshots."
 
 metadata:
   created_by: "main_agent"
-  version: "1.0"
+  version: "1.1"
   test_sequence: 1
-  run_ui: false
+  run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Heading spacing / typography legibility (funky Luckiest Guy headings not congested)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -195,3 +211,7 @@ agent_communication:
     -message: "Please test the EXIT 52 backend API endpoints (all under /api). Focus: (1) GET /api/config returns config with computed 'percent' and auto-seeds. (2) POST /api/reservations with {edition,email,name,shipping,deposit} returns {reservation:{id,code,...}, config:{percent,reservedCount}} and reservedCount increases by 1 vs prior GET /api/config. (3) POST /api/reservations missing email or edition returns 400. (4) PUT /api/config with {batchGoal, reservedCount, batchLabel} updates and recomputes percent. (5) GET /api/reservations lists created reservations with no Mongo _id leaking. No auth required."
     -agent: "testing"
     -message: "✅ ALL BACKEND TESTS PASSED (6/6). Tested all 4 API endpoints with comprehensive scenarios: (1) GET /api/config - auto-seeds correctly, returns 68%, no _id. (2) POST /api/reservations - creates reservation with UUID id and EX-XXXXXX code, increments reservedCount by exactly 1, no _id fields, validation returns 400 for missing email/edition. (3) PUT /api/config - updates all fields, recomputes percent correctly (25%). (4) GET /api/reservations - returns array sorted newest first, no _id fields. All backend APIs working perfectly. Ready for summary."
+    -agent: "main"
+    -message: "BUG FIX VERIFICATION NEEDED (frontend/UI). User said headline text 'looks congested'. I loosened tight line-heights and set .font-display line-height:1.06. Please verify on these pages that big 'Luckiest Guy' headings are NOT congested — lines must have clear vertical gaps, no overlapping glyphs, no clipped descenders, and the yellow highlighter behind 'CARDS.' must not touch the line below: (1) /home hero 'PLAY YOUR / CARDS. / FIND YOUR EXIT.' and the 'NO APP. NO COMPLEX HARDWARE. JUST DEAL, PLAY & EXIT.' block and section H2s like 'KNOW YOUR CARDS.' / 'THE SABOTAGE CARDS.' (2) /how-to-play 'HOW EXIT 52 WORKS' and 'BUT THERE'S A CATCH...' (3) /editions 'HOW DO YOU WANT TO EXIT?' (4) /prebook 'YOUR EXIT IS WAITING.' and 'WHAT'S IN THE PACK.'. Test desktop (1920x900) and mobile (390x844). Report whether headings read cleanly with adequate line spacing."
+    -agent: "testing"
+    -message: "✅ TYPOGRAPHY SPACING BUG FIX VERIFIED SUCCESSFULLY. Tested all 4 pages at desktop (1920x900) and mobile (390x844). All pages load HTTP 200, no console errors. CRITICAL FINDING: Yellow marker behind 'CARDS.' has clear separation from 'FIND YOUR EXIT.' line below - NO OVERLAP. All multi-line headings (Home hero, How-to-play 'THE GOLDEN RULE', Editions, Prebook) have clear vertical spacing between lines, no overlapping glyphs, no clipped descenders/ascenders. Line-height adjustments (leading-[1.05], leading-[1.08], .font-display line-height:1.06) working perfectly. Typography is clean and readable on both desktop and mobile. Bug fix is complete and successful."

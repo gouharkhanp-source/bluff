@@ -43,7 +43,7 @@ export default function PlayingCard({
         <div className="absolute inset-0 flex flex-col">
           <div className="flex items-center justify-between px-2 pt-2">
             <span className="label text-[7px] font-bold" style={{ color: accent }}>{tag}</span>
-            <span className="text-lg leading-none" style={{ color: accent }}>{glyph}</span>
+            <span className="text-lg leading-[1.05]" style={{ color: accent }}>{glyph}</span>
           </div>
           <div className="flex-1 flex items-center justify-center">
             <span className="text-4xl md:text-5xl" style={{ color: accent }}>{glyph}</span>
@@ -55,14 +55,14 @@ export default function PlayingCard({
         </div>
       ) : (
         <>
-          <div className="absolute top-1.5 left-2 flex flex-col items-center leading-none" style={{ color: suitColor }}>
+          <div className="absolute top-1.5 left-2 flex flex-col items-center leading-[1.05]" style={{ color: suitColor }}>
             <span className="font-cond font-bold text-sm md:text-base">{rank}</span>
             <span className="text-xs md:text-sm">{suit}</span>
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-4xl md:text-6xl" style={{ color: suitColor }}>{suit}</span>
           </div>
-          <div className="absolute bottom-1.5 right-2 flex flex-col items-center leading-none rotate-180" style={{ color: suitColor }}>
+          <div className="absolute bottom-1.5 right-2 flex flex-col items-center leading-[1.05] rotate-180" style={{ color: suitColor }}>
             <span className="font-cond font-bold text-sm md:text-base">{rank}</span>
             <span className="text-xs md:text-sm">{suit}</span>
           </div>

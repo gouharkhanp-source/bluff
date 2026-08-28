@@ -43,7 +43,7 @@ export default function HomePage() {
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-6">THE BLUFFING CARD GAME</span>
-              <h1 className="font-display text-6xl sm:text-6xl md:text-7xl leading-[0.95]">
+              <h1 className="font-display text-6xl sm:text-6xl md:text-7xl leading-[1.08]">
                 PLAY YOUR<br /><span className="marker">CARDS.</span><br />
                 <span className="text-exit-red text-glow">FIND YOUR EXIT.</span>
               </h1>
@@ -81,7 +81,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">WHAT IS EXIT 52?</span>
-            <h2 className="font-display text-4xl md:text-6xl mt-3 max-w-3xl leading-none">
+            <h2 className="font-display text-4xl md:text-6xl mt-3 max-w-3xl leading-[1.05]">
               A CARD GAME WITH A <span className="text-exit-amber">DIGITAL TWIST.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-exit-cream/60">
@@ -117,7 +117,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between flex-wrap gap-4">
-              <h2 className="font-display text-4xl md:text-6xl leading-none">KNOW YOUR <span className="text-exit-red">CARDS.</span></h2>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.05]">KNOW YOUR <span className="text-exit-red">CARDS.</span></h2>
               <p className="label text-[10px] text-exit-cream/40">HOVER · TILT · REVEAL</p>
             </div>
           </Reveal>
@@ -153,7 +153,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between flex-wrap gap-4">
-              <h2 className="font-display text-4xl md:text-6xl leading-none text-white">THE <span className="text-exit-red">SABOTAGE CARDS.</span></h2>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.05] text-white">THE <span className="text-exit-red">SABOTAGE CARDS.</span></h2>
               <p className="label text-[10px] text-white/40">DISRUPT · INFECT · STEAL · SEAL</p>
             </div>
           </Reveal>
@@ -170,7 +170,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between flex-wrap gap-4">
-              <h2 className="font-display text-4xl md:text-6xl leading-none text-white">THE <span className="text-[#b9b2ff]">POWER CARDS.</span></h2>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.05] text-white">THE <span className="text-[#b9b2ff]">POWER CARDS.</span></h2>
               <p className="label text-[10px] text-white/40">YOUR ESCAPE PLAN</p>
             </div>
           </Reveal>
@@ -187,7 +187,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between flex-wrap gap-4">
-              <h2 className="font-display text-4xl md:text-6xl leading-none text-exit-ink">KNOW YOUR <span className="text-exit-red">WIN RULES.</span></h2>
+              <h2 className="font-display text-4xl md:text-6xl leading-[1.05] text-exit-ink">KNOW YOUR <span className="text-exit-red">WIN RULES.</span></h2>
               <p className="label text-[10px] text-exit-ink/40">THE GAME SELECTOR DECIDES</p>
             </div>
           </Reveal>
@@ -202,7 +202,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(230,57,70,0.12),transparent_65%)]" />
         <div className="container relative">
           <Reveal>
-            <h2 className="font-display text-5xl md:text-7xl text-center leading-[0.9]">
+            <h2 className="font-display text-5xl md:text-7xl text-center leading-[1.05]">
               WIN THE CARDS.<br /><span className="text-exit-red text-glow">OR FACE THE CHALLENGE.</span>
             </h2>
           </Reveal>
@@ -233,7 +233,7 @@ export default function HomePage() {
       <section className="relative py-24 bg-exit-charcoal/30 border-y border-slate-900/10">
         <div className="container">
           <Reveal>
-            <h2 className="font-display text-4xl md:text-6xl leading-none">PICK YOUR <span className="text-exit-red">MODE.</span></h2>
+            <h2 className="font-display text-4xl md:text-6xl leading-[1.05]">PICK YOUR <span className="text-exit-red">MODE.</span></h2>
           </Reveal>
           <div className="mt-10 grid lg:grid-cols-[0.9fr_1.1fr] gap-8">
             <div className="flex flex-col gap-3">
@@ -269,7 +269,7 @@ export default function HomePage() {
         <FallingCards count={10} />
         <div className="container relative">
           <Reveal>
-            <h2 className="font-display text-5xl md:text-7xl leading-none">READY TO <span className="text-exit-red text-glow">EXIT?</span></h2>
+            <h2 className="font-display text-5xl md:text-7xl leading-[1.05]">READY TO <span className="text-exit-red text-glow">EXIT?</span></h2>
             <p className="mt-4 text-exit-cream/60 max-w-lg mx-auto">Jump into a free browser game, or reserve your deck from the first production batch.</p>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'cta_band' })} className="label text-xs font-semibold px-8 py-4 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">PLAY FREE ONLINE</Link>

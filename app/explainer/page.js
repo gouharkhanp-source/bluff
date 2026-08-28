@@ -49,7 +49,7 @@ export default function Explainer() {
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">AI VLOG EXPLAINER</span>
-            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-none">WATCH IT.<br />GET IT. <span className="text-exit-red">PLAY IT.</span></h1>
+            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[1.05]">WATCH IT.<br />GET IT. <span className="text-exit-red">PLAY IT.</span></h1>
             <p className="mt-4 text-exit-cream/60">Learn EXIT 52 in under two minutes.</p>
           </Reveal>
         </div>

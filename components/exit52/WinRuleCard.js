@@ -5,8 +5,8 @@ import { ASSETS } from '@/lib/exit52/images'
 export default function WinRuleCard({ rule }) {
   return (
     <div className="relative w-full rounded-2xl bg-[#e9ecef] border border-black/5 shadow-[0_18px_45px_-20px_rgba(0,0,0,0.35)] aspect-[2/3.05] px-4 pt-5 pb-4 flex flex-col items-center text-center text-exit-ink overflow-hidden">
-      <div className="font-script text-2xl leading-none text-[#161616]">{rule.script}</div>
-      <div className="font-display text-2xl md:text-[26px] leading-none text-[#161616]">{rule.bold}</div>
+      <div className="font-script text-2xl leading-[1.05] text-[#161616]">{rule.script}</div>
+      <div className="font-display text-2xl md:text-[26px] leading-[1.05] text-[#161616]">{rule.bold}</div>
 
       <svg viewBox="0 0 300 70" className="w-full mt-2" aria-hidden="true">
         <defs>

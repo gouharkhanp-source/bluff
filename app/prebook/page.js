@@ -60,7 +60,7 @@ export default function PreBook() {
         <div className="container relative text-center">
           <Reveal>
             <span className="label text-[10px] text-exit-red">PRE-BOOK / RESERVATION</span>
-            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-none">YOUR EXIT IS <span className="text-exit-red text-glow">WAITING.</span></h1>
+            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[1.05]">YOUR EXIT IS <span className="text-exit-red text-glow">WAITING.</span></h1>
             <p className="mt-4 text-exit-cream/60">Reserve your place in the first production batch.</p>
           </Reveal>
 

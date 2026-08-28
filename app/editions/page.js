@@ -20,7 +20,7 @@ export default function Editions() {
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">GAME EDITIONS</span>
-            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-none">HOW DO YOU WANT TO <span className="text-exit-red">EXIT?</span></h1>
+            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[1.05]">HOW DO YOU WANT TO <span className="text-exit-red">EXIT?</span></h1>
           </Reveal>
         </div>
       </section>

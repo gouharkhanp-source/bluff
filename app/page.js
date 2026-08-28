@@ -104,7 +104,7 @@ export default function EntryGate() {
           transition={{ duration: 1, delay: 0.5 }}
           className="space-y-3"
         >
-          <h1 className="font-display text-4xl md:text-6xl leading-none">
+          <h1 className="font-display text-4xl md:text-6xl leading-[1.05]">
             THERE&apos;S AN <span className="text-exit-red text-glow">EXIT</span>.
           </h1>
           <p className="label text-[10px] text-exit-cream/45 anim-flicker">CLICK THE CARD TO ENTER</p>

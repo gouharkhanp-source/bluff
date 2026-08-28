@@ -34,7 +34,7 @@ export default function HowToPlay() {
         <div className="container relative">
           <Reveal>
             <span className="label text-[10px] text-exit-red">RULES OF THE ROAD</span>
-            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-none">HOW EXIT 52 WORKS</h1>
+            <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[1.05]">HOW EXIT 52 WORKS</h1>
             <p className="mt-4 label text-xs text-exit-cream/50">3 STEPS. ONE GOAL. FIND YOUR EXIT.</p>
           </Reveal>
         </div>
@@ -83,7 +83,7 @@ export default function HowToPlay() {
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">THE GOLDEN RULE</span>
-            <h2 className="font-display text-4xl md:text-7xl mt-4 leading-[0.95]">
+            <h2 className="font-display text-4xl md:text-7xl mt-4 leading-[1.08]">
               PLAY YOUR CARDS.<br />COMPLETE YOUR FORMATION.<br /><span className="text-exit-red text-glow">REACH THE EXIT.</span>
             </h2>
             <p className="mt-8 text-exit-cream/60">Think you&apos;ve got it?</p>
