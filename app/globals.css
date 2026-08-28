@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 6% 4%;
+    --foreground: 40 30% 94%;
+    --card: 240 5% 8%;
+    --card-foreground: 40 30% 94%;
+    --popover: 240 5% 7%;
+    --popover-foreground: 40 30% 94%;
+    --primary: 355 78% 56%;
+    --primary-foreground: 40 30% 96%;
+    --secondary: 240 5% 14%;
+    --secondary-foreground: 40 30% 94%;
+    --muted: 240 5% 13%;
+    --muted-foreground: 40 8% 62%;
+    --accent: 22 100% 60%;
+    --accent-foreground: 240 6% 6%;
+    --destructive: 355 78% 50%;
+    --destructive-foreground: 40 30% 96%;
+    --border: 240 5% 18%;
+    --input: 240 5% 16%;
+    --ring: 355 78% 56%;
+    --radius: 0.6rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: hsl(355 78% 56% / 0.35);
+    color: #fff;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0a0a0b; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2e; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #e63946; }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Anton', 'Oswald', sans-serif; letter-spacing: 0.01em; }
+  .font-cond { font-family: 'Oswald', sans-serif; }
+  .perspective { perspective: 1400px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+  .text-glow { text-shadow: 0 0 24px rgba(230,57,70,0.55); }
+  .text-glow-soft { text-shadow: 0 0 30px rgba(0,0,0,0.6); }
+  .label { text-transform: uppercase; letter-spacing: 0.22em; }
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .card-back-pattern {
+    background-color: #0e0e10;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(230,57,70,0.16) 0, rgba(230,57,70,0.16) 2px, transparent 2px, transparent 9px),
+      repeating-linear-gradient(-45deg, rgba(230,57,70,0.16) 0, rgba(230,57,70,0.16) 2px, transparent 2px, transparent 9px);
+  }
+  .radial-fade {
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 78%);
+    mask-image: radial-gradient(ellipse at center, #000 40%, transparent 78%);
+  }
+}
+
+@keyframes floaty { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-14px) rotate(var(--r,0deg)); } }
+@keyframes breathe { 0%,100% { transform: translateY(0) scale(1); box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8); } 50% { transform: translateY(-10px) scale(1.02); box-shadow: 0 45px 80px -20px rgba(230,57,70,0.35); } }
+@keyframes cardfall { 0% { transform: translateY(-15vh) rotate(0deg); opacity: 0; } 8% { opacity: 0.8; } 100% { transform: translateY(115vh) rotate(320deg); opacity: 0; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes pulseglow { 0%,100% { box-shadow: 0 0 0 0 rgba(230,57,70,0.5); } 50% { box-shadow: 0 0 30px 6px rgba(230,57,70,0); } }
+@keyframes flicker { 0%,19%,21%,23%,25%,54%,56%,100% { opacity: 1; } 20%,24%,55% { opacity: 0.55; } }
+
+.anim-floaty { animation: floaty 6s ease-in-out infinite; }
+.anim-breathe { animation: breathe 4.5s ease-in-out infinite; }
+.anim-pulseglow { animation: pulseglow 2.2s ease-in-out infinite; }
+.anim-flicker { animation: flicker 4s linear infinite; }
+.shimmer-text {
+  background: linear-gradient(90deg,#f4f1ea 0%,#e63946 30%,#f4a259 50%,#e63946 70%,#f4f1ea 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
