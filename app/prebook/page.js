@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import SiteShell from '@/components/exit52/SiteShell'
 import Reveal from '@/components/exit52/Reveal'
 import PlayingCard from '@/components/exit52/PlayingCard'
-import { IMAGES } from '@/lib/exit52/images'
+import { IMAGES, ASSETS } from '@/lib/exit52/images'
 import { EDITIONS, PERKS } from '@/lib/exit52/data'
 import { track, EVENTS } from '@/lib/exit52/analytics'
 import { Check, ArrowRight, ArrowLeft } from 'lucide-react'
@@ -78,6 +78,29 @@ export default function PreBook() {
               </div>
             </Reveal>
           )}
+        </div>
+      </section>
+
+      {/* DECK PACK */}
+      <section className="relative py-16 bg-white">
+        <div className="container">
+          <Reveal>
+            <div className="text-center mb-8">
+              <span className="label text-[10px] text-exit-red">FUN EDITION</span>
+              <h2 className="font-display text-4xl md:text-6xl mt-2 text-exit-ink">WHAT&apos;S IN THE <span className="text-exit-red">PACK.</span></h2>
+              <p className="mt-3 text-exit-ink/50">110 cards · 2–6 players · Ages 16+ · Game Modes, Sabotage &amp; Accelerator cards.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="relative rounded-2xl border border-slate-900/10 bg-[#f7f8fb] p-4 md:p-8 shadow-[0_30px_70px_-30px_rgba(58,48,184,0.4)]">
+              <img src={ASSETS.deckPack} alt="EXIT 52 Fun Edition deck pack — 110 cards, game modes, sabotage and accelerator cards, gameplay instructions" loading="lazy" className="w-full h-auto rounded-xl" />
+            </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              {['110 CARDS', 'PLAYERS 2–6', 'AGES 16+', '₹399'].map((t) => (
+                <span key={t} className="label text-[10px] px-4 py-2 rounded-full border border-slate-900/15 text-exit-ink/70">{t}</span>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
