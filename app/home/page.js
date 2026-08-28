@@ -30,7 +30,7 @@ export default function HomePage() {
     <SiteShell>
       {/* HERO */}
       <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-16">
-        <img src={IMAGES.hero} alt="Scattered EXIT 52 playing cards on a dark table" className="absolute inset-0 h-full w-full object-cover opacity-25" />
+        <img src={IMAGES.hero} alt="Scattered EXIT 52 playing cards on a dark table" className="absolute inset-0 h-full w-full object-cover opacity-[0.15]" />
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/80 via-exit-black/70 to-exit-black" />
         <div className="absolute inset-0 bg-gradient-to-r from-exit-black via-exit-black/40 to-transparent" />
         <FallingCards count={12} />
@@ -50,7 +50,7 @@ export default function HomePage() {
                 <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'hero' })} className="group inline-flex items-center gap-2 label text-xs font-semibold px-7 h-13 py-4 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">
                   PLAY FREE ONLINE <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/prebook" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 rounded-md border border-exit-cream/30 text-exit-cream hover:border-exit-cream hover:bg-white/5 transition-colors">
+                <Link href="/prebook" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 rounded-md border border-exit-cream/30 text-exit-cream hover:border-exit-cream hover:bg-slate-900/[0.03] transition-colors">
                   PRE-BOOK THE DECK
                 </Link>
               </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="mt-12 rounded-2xl border border-white/10 bg-exit-charcoal/50 p-8 md:p-10">
+            <div className="mt-12 rounded-2xl border border-slate-900/10 bg-exit-charcoal/50 p-8 md:p-10">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <FlowStep label="PHYSICAL DECK" sub="Deal & play" />
                 <ArrowRight className="text-exit-red rotate-90 md:rotate-0" size={20} />
@@ -113,7 +113,7 @@ export default function HomePage() {
       </section>
 
       {/* CARD SHOWCASE */}
-      <section className="relative py-24 bg-exit-charcoal/30 border-y border-white/10">
+      <section className="relative py-24 bg-exit-charcoal/30 border-y border-slate-900/10">
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between flex-wrap gap-4">
@@ -161,13 +161,13 @@ export default function HomePage() {
           <div className="mt-16 grid lg:grid-cols-2 gap-14 items-center">
             <div className="space-y-8">
               <Reveal>
-                <div className="rounded-xl border border-white/10 bg-exit-charcoal/50 p-6">
+                <div className="rounded-xl border border-slate-900/10 bg-exit-charcoal/50 p-6">
                   <div className="label text-xs text-exit-amber">2 PLAYERS</div>
                   <p className="mt-2 text-exit-cream/70">One player wins. The other faces the Challenge.</p>
                 </div>
               </Reveal>
               <Reveal delay={0.1}>
-                <div className="rounded-xl border border-white/10 bg-exit-charcoal/50 p-6">
+                <div className="rounded-xl border border-slate-900/10 bg-exit-charcoal/50 p-6">
                   <div className="label text-xs text-exit-amber">3–6 PLAYERS</div>
                   <p className="mt-2 text-exit-cream/70">The final two players face the Challenge.</p>
                 </div>
@@ -181,7 +181,7 @@ export default function HomePage() {
       </section>
 
       {/* GAME MODES */}
-      <section className="relative py-24 bg-exit-charcoal/30 border-y border-white/10">
+      <section className="relative py-24 bg-exit-charcoal/30 border-y border-slate-900/10">
         <div className="container">
           <Reveal>
             <h2 className="font-display text-4xl md:text-6xl leading-none">PICK YOUR <span className="text-exit-red">MODE.</span></h2>
@@ -195,7 +195,7 @@ export default function HomePage() {
                   <button
                     key={m.key}
                     onClick={() => setMode(m.key)}
-                    className={`text-left rounded-xl border p-5 transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-white/10 hover:border-white/25 bg-exit-charcoal/40'}`}
+                    className={`text-left rounded-xl border p-5 transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-slate-900/10 hover:border-slate-900/20 bg-exit-charcoal/40'}`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={18} className={on ? 'text-exit-red' : 'text-exit-cream/50'} />
@@ -206,7 +206,7 @@ export default function HomePage() {
                 )
               })}
             </div>
-            <motion.div key={mode} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} className="rounded-2xl border border-white/10 bg-gradient-to-br from-exit-charcoal to-exit-black p-8 flex flex-col justify-center">
+            <motion.div key={mode} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} className="rounded-2xl border border-slate-900/10 bg-gradient-to-br from-exit-charcoal to-exit-black p-8 flex flex-col justify-center">
               <div className="label text-[10px] text-exit-red">SELECTED MODE</div>
               <h3 className="font-display text-4xl md:text-5xl mt-2">{active.title}</h3>
               <p className="mt-4 text-exit-cream/60 max-w-md">{active.desc}</p>

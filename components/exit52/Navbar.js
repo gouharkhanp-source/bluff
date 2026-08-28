@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-exit-black/85 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
+        scrolled ? 'bg-exit-black/85 backdrop-blur-md border-b border-slate-900/10' : 'bg-transparent'
       }`}
     >
       <nav className="container flex items-center justify-between h-16 md:h-[72px]">
@@ -56,7 +56,7 @@ export default function Navbar() {
           <button
             onClick={toggleSound}
             aria-label={sound ? 'Sound on' : 'Sound off'}
-            className="grid place-items-center h-9 w-9 rounded-md border border-white/15 text-exit-cream/70 hover:text-exit-cream hover:border-exit-red/60 transition-colors"
+            className="grid place-items-center h-9 w-9 rounded-md border border-slate-900/10 text-exit-cream/70 hover:text-exit-cream hover:border-exit-red/60 transition-colors"
           >
             {sound ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
@@ -75,7 +75,7 @@ export default function Navbar() {
             PRE-BOOK DECK
           </Link>
           <button
-            className="md:hidden grid place-items-center h-9 w-9 rounded-md border border-white/15 text-exit-cream"
+            className="md:hidden grid place-items-center h-9 w-9 rounded-md border border-slate-900/10 text-exit-cream"
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
           >
@@ -85,7 +85,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="md:hidden bg-exit-black/95 backdrop-blur-md border-b border-white/10">
+        <div className="md:hidden bg-exit-black/95 backdrop-blur-md border-b border-slate-900/10">
           <div className="container py-6 flex flex-col gap-5">
             {NAV_LINKS.map((l) => (
               <Link

@@ -55,7 +55,7 @@ export default function PreBook() {
   return (
     <SiteShell>
       <section className="pt-28 pb-12 relative overflow-hidden">
-        <img src={IMAGES.prebook} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
+        <img src={IMAGES.prebook} alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.12]" />
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/70 to-exit-black" />
         <div className="container relative text-center">
           <Reveal>
@@ -66,12 +66,12 @@ export default function PreBook() {
 
           {cfg && (
             <Reveal delay={0.1}>
-              <div className="mt-10 max-w-xl mx-auto rounded-2xl border border-white/10 bg-exit-charcoal/60 p-6">
+              <div className="mt-10 max-w-xl mx-auto rounded-2xl border border-slate-900/10 bg-exit-charcoal/60 p-6">
                 <div className="flex items-center justify-between mb-3">
                   <span className="label text-xs text-exit-amber">{cfg.batchLabel}</span>
                   <span className="font-display text-2xl text-exit-red">{cfg.percent}% RESERVED</span>
                 </div>
-                <div className="h-3 rounded-full bg-white/10 overflow-hidden">
+                <div className="h-3 rounded-full bg-slate-900/10 overflow-hidden">
                   <motion.div className="h-full bg-gradient-to-r from-exit-red to-exit-orange" initial={{ width: 0 }} animate={{ width: `${barPct}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} />
                 </div>
                 <p className="mt-2 text-[11px] text-exit-cream/40">{cfg.reservedCount} of {cfg.batchGoal} reserved</p>
@@ -82,11 +82,11 @@ export default function PreBook() {
       </section>
 
       {/* PERKS */}
-      <section className="py-16 border-y border-white/10 bg-exit-charcoal/20">
+      <section className="py-16 border-y border-slate-900/10 bg-exit-charcoal/20">
         <div className="container grid gap-5 md:grid-cols-3">
           {PERKS.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
-              <div className="rounded-xl border border-white/10 bg-exit-charcoal/40 p-6 h-full">
+              <div className="rounded-xl border border-slate-900/10 bg-exit-charcoal/40 p-6 h-full">
                 <div className="text-3xl text-exit-red mb-3">{p.glyph}</div>
                 <div className="font-cond font-bold">{p.title}</div>
                 <p className="text-sm text-exit-cream/55 mt-1">{p.desc}</p>
@@ -112,12 +112,12 @@ export default function PreBook() {
               <p className="mt-6 label text-[10px] text-exit-cream/40">DEPOSIT IS A PROTOTYPE — NO REAL CHARGE WAS MADE</p>
             </motion.div>
           ) : (
-            <div className="rounded-2xl border border-white/10 bg-exit-charcoal/40 p-6 md:p-10">
+            <div className="rounded-2xl border border-slate-900/10 bg-exit-charcoal/40 p-6 md:p-10">
               {/* progress */}
               <div className="flex items-center gap-2 mb-8">
                 {STEPS.map((s, i) => (
                   <div key={s} className="flex-1">
-                    <div className={`h-1.5 rounded-full ${i <= step ? 'bg-exit-red' : 'bg-white/10'}`} />
+                    <div className={`h-1.5 rounded-full ${i <= step ? 'bg-exit-red' : 'bg-slate-900/10'}`} />
                     <div className={`mt-2 label text-[8px] hidden sm:block ${i === step ? 'text-exit-red' : 'text-exit-cream/30'}`}>{s}</div>
                   </div>
                 ))}
@@ -131,7 +131,7 @@ export default function PreBook() {
                   {step === 0 && (
                     <div className="grid sm:grid-cols-2 gap-3">
                       {EDITIONS.map((e) => (
-                        <button key={e.id} onClick={() => set('edition', e.id)} className={`text-left rounded-xl border p-4 transition-all ${form.edition === e.id ? 'border-exit-red bg-exit-red/10' : 'border-white/10 hover:border-white/25'}`}>
+                        <button key={e.id} onClick={() => set('edition', e.id)} className={`text-left rounded-xl border p-4 transition-all ${form.edition === e.id ? 'border-exit-red bg-exit-red/10' : 'border-slate-900/10 hover:border-slate-900/20'}`}>
                           <div className="font-cond font-bold text-sm">{e.title}</div>
                           <div className="font-display text-2xl mt-1">${e.price}</div>
                         </button>
@@ -140,16 +140,16 @@ export default function PreBook() {
                   )}
                   {step === 1 && (
                     <div className="space-y-4">
-                      <div><label className="label text-[10px] text-exit-cream/50">FULL NAME</label><input value={form.name} onChange={(e) => set('name', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" placeholder="Jane Doe" /></div>
-                      <div><label className="label text-[10px] text-exit-cream/50">EMAIL</label><input value={form.email} onChange={(e) => set('email', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" placeholder="jane@example.com" /></div>
+                      <div><label className="label text-[10px] text-exit-cream/50">FULL NAME</label><input value={form.name} onChange={(e) => set('name', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" placeholder="Jane Doe" /></div>
+                      <div><label className="label text-[10px] text-exit-cream/50">EMAIL</label><input value={form.email} onChange={(e) => set('email', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" placeholder="jane@example.com" /></div>
                     </div>
                   )}
                   {step === 2 && (
                     <div className="space-y-4">
-                      <div><label className="label text-[10px] text-exit-cream/50">ADDRESS</label><input value={form.address} onChange={(e) => set('address', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" placeholder="1 Highway Rd" /></div>
+                      <div><label className="label text-[10px] text-exit-cream/50">ADDRESS</label><input value={form.address} onChange={(e) => set('address', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" placeholder="1 Highway Rd" /></div>
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <div><label className="label text-[10px] text-exit-cream/50">CITY</label><input value={form.city} onChange={(e) => set('city', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" /></div>
-                        <div><label className="label text-[10px] text-exit-cream/50">COUNTRY</label><input value={form.country} onChange={(e) => set('country', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" /></div>
+                        <div><label className="label text-[10px] text-exit-cream/50">CITY</label><input value={form.city} onChange={(e) => set('city', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" /></div>
+                        <div><label className="label text-[10px] text-exit-cream/50">COUNTRY</label><input value={form.country} onChange={(e) => set('country', e.target.value)} className="mt-1 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" /></div>
                       </div>
                     </div>
                   )}
@@ -158,7 +158,7 @@ export default function PreBook() {
                       <p className="text-exit-cream/60 mb-4">Secure your <span className="text-exit-cream">{selEd?.title}</span> with a small refundable deposit.</p>
                       <div className="flex gap-3">
                         {[5, 10, 20].map((d) => (
-                          <button key={d} onClick={() => set('deposit', d)} className={`flex-1 rounded-xl border py-6 font-display text-3xl transition-all ${form.deposit === d ? 'border-exit-red bg-exit-red/10 text-exit-red' : 'border-white/10 hover:border-white/25'}`}>${d}</button>
+                          <button key={d} onClick={() => set('deposit', d)} className={`flex-1 rounded-xl border py-6 font-display text-3xl transition-all ${form.deposit === d ? 'border-exit-red bg-exit-red/10 text-exit-red' : 'border-slate-900/10 hover:border-slate-900/20'}`}>${d}</button>
                         ))}
                       </div>
                       <p className="mt-4 label text-[10px] text-exit-cream/40">PROTOTYPE CHECKOUT — NO REAL PAYMENT IS PROCESSED</p>
@@ -167,7 +167,7 @@ export default function PreBook() {
                   {step === 4 && (
                     <div className="space-y-3 text-sm">
                       {[['Edition', selEd?.title], ['Name', form.name], ['Email', form.email], ['Ship to', `${form.address}, ${form.city}, ${form.country}`], ['Deposit', `$${form.deposit} (prototype)`]].map(([k, v]) => (
-                        <div key={k} className="flex justify-between border-b border-white/10 pb-2"><span className="text-exit-cream/50">{k}</span><span className="text-right">{v}</span></div>
+                        <div key={k} className="flex justify-between border-b border-slate-900/10 pb-2"><span className="text-exit-cream/50">{k}</span><span className="text-right">{v}</span></div>
                       ))}
                     </div>
                   )}
@@ -175,7 +175,7 @@ export default function PreBook() {
               </AnimatePresence>
 
               <div className="mt-8 flex justify-between">
-                <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="inline-flex items-center gap-2 label text-[11px] px-5 py-3 rounded-md border border-white/15 disabled:opacity-30"><ArrowLeft size={14} /> BACK</button>
+                <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="inline-flex items-center gap-2 label text-[11px] px-5 py-3 rounded-md border border-slate-900/10 disabled:opacity-30"><ArrowLeft size={14} /> BACK</button>
                 {step < 4 ? (
                   <button onClick={() => canNext() && setStep((s) => s + 1)} disabled={!canNext()} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 rounded-md bg-exit-red text-white disabled:opacity-40">NEXT <ArrowRight size={14} /></button>
                 ) : (

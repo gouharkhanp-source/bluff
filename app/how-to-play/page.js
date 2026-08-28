@@ -47,7 +47,7 @@ export default function HowToPlay() {
               const on = i === step
               return (
                 <button key={s.no} onClick={() => { setStep(i); track(EVENTS.howToStep, { step: s.no }) }}
-                  className={`text-left rounded-xl border p-6 transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-white/10 hover:border-white/25 bg-exit-charcoal/40'}`}>
+                  className={`text-left rounded-xl border p-6 transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-slate-900/10 hover:border-slate-900/20 bg-exit-charcoal/40'}`}>
                   <div className="flex items-baseline gap-4">
                     <span className={`font-display text-4xl ${on ? 'text-exit-red' : 'text-exit-cream/25'}`}>{s.no}</span>
                     <span className="font-cond font-bold text-xl">{s.title}</span>
@@ -57,7 +57,7 @@ export default function HowToPlay() {
               )
             })}
           </div>
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-exit-charcoal to-exit-black p-10 flex flex-col items-center justify-center min-h-[340px]">
+          <div className="rounded-2xl border border-slate-900/10 bg-gradient-to-br from-exit-charcoal to-exit-black p-10 flex flex-col items-center justify-center min-h-[340px]">
             <AnimatePresence mode="wait">
               <motion.div key={step} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.35 }} className="w-full text-center">
                 <div className="label text-[10px] text-exit-amber mb-2">STEP {active.no}</div>
@@ -70,7 +70,7 @@ export default function HowToPlay() {
         </div>
       </section>
 
-      <section className="py-20 text-center relative overflow-hidden border-y border-white/10 bg-exit-charcoal/30">
+      <section className="py-20 text-center relative overflow-hidden border-y border-slate-900/10 bg-exit-charcoal/30">
         <div className="container relative">
           <Reveal>
             <h2 className="font-display text-4xl md:text-6xl">BUT THERE&apos;S A CATCH...</h2>

@@ -19,7 +19,7 @@ export default function FAQ() {
         <div className="container max-w-3xl">
           <Accordion type="single" collapsible className="space-y-3">
             {FAQS.map((f, i) => (
-              <AccordionItem key={i} value={`q-${i}`} className="rounded-xl border border-white/10 bg-exit-charcoal/40 px-5">
+              <AccordionItem key={i} value={`q-${i}`} className="rounded-xl border border-slate-900/10 bg-exit-charcoal/40 px-5">
                 <AccordionTrigger className="text-left font-cond font-semibold text-base hover:no-underline hover:text-exit-red">{f.q}</AccordionTrigger>
                 <AccordionContent className="text-exit-cream/60">{f.a}</AccordionContent>
               </AccordionItem>

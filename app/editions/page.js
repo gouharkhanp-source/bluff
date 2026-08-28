@@ -29,10 +29,10 @@ export default function Editions() {
         <div className="container grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {EDITIONS.map((e, i) => (
             <Reveal key={e.id} delay={i * 0.06}>
-              <div className="group h-full rounded-2xl border border-white/10 bg-exit-charcoal/40 p-6 flex flex-col hover:border-exit-red/50 transition-colors">
+              <div className="group h-full rounded-2xl border border-slate-900/10 bg-exit-charcoal/40 p-6 flex flex-col hover:border-exit-red/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="font-display text-3xl text-exit-cream/20">{e.no}</span>
-                  <span className={`label text-[9px] border rounded-full px-2 py-1 ${badgeColor[e.badge] || 'text-exit-cream/60 border-white/20'}`}>{e.badge}</span>
+                  <span className={`label text-[9px] border rounded-full px-2 py-1 ${badgeColor[e.badge] || 'text-exit-cream/60 border-slate-900/15'}`}>{e.badge}</span>
                 </div>
                 <h3 className="font-cond font-bold text-lg mt-4 min-h-[56px]">{e.title}</h3>
                 <p className="text-xs text-exit-cream/50 mt-1">{e.tagline}</p>
@@ -58,7 +58,7 @@ export default function Editions() {
         <div className="container">
           <Reveal>
             <h2 className="font-display text-3xl md:text-5xl mb-8 text-center">COMPARE THE DECKS</h2>
-            <div className="overflow-x-auto rounded-2xl border border-white/10">
+            <div className="overflow-x-auto rounded-2xl border border-slate-900/10">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="bg-exit-charcoal/60">
@@ -70,7 +70,7 @@ export default function Editions() {
                 </thead>
                 <tbody>
                   {COMPARISON_ROWS.map((row, ri) => (
-                    <tr key={row.label} className={ri % 2 ? 'bg-white/[0.02]' : ''}>
+                    <tr key={row.label} className={ri % 2 ? 'bg-slate-900/[0.03]' : ''}>
                       <td className="p-4 text-exit-cream/70">{row.label}</td>
                       {row.values.map((v, ci) => (
                         <td key={ci} className="p-4 text-center">

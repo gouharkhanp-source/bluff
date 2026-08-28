@@ -9,7 +9,7 @@ const COLS = [
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-exit-black">
+    <footer className="relative border-t border-slate-900/10 bg-exit-black">
       <div className="container py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -31,7 +31,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mt-12 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-exit-cream/40">© {new Date().getFullYear()} EXIT 52™. All rights reserved.</p>
           <p className="label text-[10px] text-exit-cream/40">PLAY YOUR CARDS · FIND YOUR EXIT</p>
         </div>

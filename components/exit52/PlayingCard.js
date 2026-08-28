@@ -32,7 +32,7 @@ export default function PlayingCard({
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <div className="font-display text-exit-red/90 leading-none text-2xl md:text-3xl">52</div>
-            <div className="label text-[7px] md:text-[8px] text-exit-cream/50 mt-1">EXIT</div>
+            <div className="label text-[7px] md:text-[8px] text-white/60 mt-1">EXIT</div>
           </div>
         </div>
         {children}
@@ -40,12 +40,12 @@ export default function PlayingCard({
     )
   }
 
-  const suitColor = red ? '#e63946' : '#f4f1ea'
+  const suitColor = red ? '#e11d2a' : '#0f1e3d'
 
   return (
     <div
       className={cn(
-        'relative rounded-xl bg-gradient-to-b from-[#faf7f0] to-[#e9e4d8] text-exit-black overflow-hidden shadow-2xl border border-black/10',
+        'relative rounded-xl bg-gradient-to-b from-[#faf7f0] to-[#e9e4d8] text-exit-ink overflow-hidden shadow-2xl border border-black/10',
         className
       )}
       style={style}

@@ -36,7 +36,7 @@ export default function Rules() {
             <h2 className="font-display text-3xl mb-4">THE CARDS</h2>
             <div className="space-y-3">
               {CARD_TYPES.map((c) => (
-                <div key={c.key} className="rounded-xl border border-white/10 bg-exit-charcoal/40 p-4">
+                <div key={c.key} className="rounded-xl border border-slate-900/10 bg-exit-charcoal/40 p-4">
                   <div className="font-cond font-bold" style={{ color: c.color }}>{c.title}</div>
                   <p className="text-sm text-exit-cream/60 mt-1">{c.desc}</p>
                 </div>

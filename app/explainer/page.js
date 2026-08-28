@@ -58,8 +58,8 @@ export default function Explainer() {
       <section className="pb-24">
         <div className="container grid lg:grid-cols-[1.4fr_1fr] gap-8">
           <div>
-            <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-video bg-exit-black">
-              <img src={IMAGES.neon} alt="AI host explaining EXIT 52" className="absolute inset-0 h-full w-full object-cover opacity-40" />
+            <div className="relative rounded-2xl overflow-hidden border border-slate-900/10 aspect-video bg-exit-black">
+              <img src={IMAGES.neon} alt="AI host explaining EXIT 52" className="absolute inset-0 h-full w-full object-cover opacity-20" />
               <div className="absolute inset-0 bg-gradient-to-t from-exit-black via-exit-black/30 to-transparent" />
               <div className="absolute inset-0 grid place-items-center">
                 <div className="text-center">
@@ -74,7 +74,7 @@ export default function Explainer() {
               <div className="absolute inset-x-0 bottom-0 p-4">
                 <div className="flex items-center gap-3">
                   <span className="label text-[10px] text-exit-cream/70 tabular-nums">{fmt(t)}</span>
-                  <div className="relative flex-1 h-1.5 rounded-full bg-white/15 cursor-pointer" onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); seek(Math.round(((e.clientX - r.left) / r.width) * DURATION)) }}>
+                  <div className="relative flex-1 h-1.5 rounded-full bg-slate-900/10 cursor-pointer" onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); seek(Math.round(((e.clientX - r.left) / r.width) * DURATION)) }}>
                     <div className="absolute inset-y-0 left-0 rounded-full bg-exit-red" style={{ width: `${(t / DURATION) * 100}%` }} />
                   </div>
                   <span className="label text-[10px] text-exit-cream/40 tabular-nums">{fmt(DURATION)}</span>
@@ -87,7 +87,7 @@ export default function Explainer() {
               {CHAPTERS.map((c) => {
                 const on = c.label === activeChapter.label
                 return (
-                  <button key={c.label} onClick={() => seek(c.seconds)} className={`rounded-lg border p-3 text-left transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-white/10 hover:border-white/25'}`}>
+                  <button key={c.label} onClick={() => seek(c.seconds)} className={`rounded-lg border p-3 text-left transition-all ${on ? 'border-exit-red bg-exit-red/10' : 'border-slate-900/10 hover:border-slate-900/20'}`}>
                     <div className="label text-[10px] text-exit-amber tabular-nums">{c.time}</div>
                     <div className="font-cond text-xs font-semibold mt-1">{c.label}</div>
                   </button>
@@ -99,9 +99,9 @@ export default function Explainer() {
 
           <div>
             <h2 className="font-cond font-bold text-xl mb-4">QUICK-REFERENCE RULEBOOK</h2>
-            <Accordion type="single" collapsible defaultValue="item-0" className="rounded-xl border border-white/10 bg-exit-charcoal/40 px-4">
+            <Accordion type="single" collapsible defaultValue="item-0" className="rounded-xl border border-slate-900/10 bg-exit-charcoal/40 px-4">
               {RULEBOOK.map(([q, a], i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="border-white/10">
+                <AccordionItem key={i} value={`item-${i}`} className="border-slate-900/10">
                   <AccordionTrigger className="text-left font-cond font-semibold hover:no-underline hover:text-exit-red">{q}</AccordionTrigger>
                   <AccordionContent className="text-exit-cream/60">{a}</AccordionContent>
                 </AccordionItem>

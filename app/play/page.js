@@ -37,22 +37,22 @@ export default function Play() {
               <span className="label text-[10px] text-exit-red">PLAY FREE ONLINE</span>
               <h1 className="font-display text-4xl md:text-6xl mt-2">JOIN A ROOM</h1>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-exit-charcoal/40 p-8 space-y-6">
+            <div className="rounded-2xl border border-slate-900/10 bg-exit-charcoal/40 p-8 space-y-6">
               <div>
                 <label className="label text-[10px] text-exit-cream/50">4-DIGIT ROOM CODE</label>
                 <input value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 4))} inputMode="numeric" placeholder="0000"
-                  className="mt-2 w-full text-center font-display text-4xl tracking-[0.4em] rounded-md bg-exit-black border border-white/15 py-4 outline-none focus:border-exit-red" />
+                  className="mt-2 w-full text-center font-display text-4xl tracking-[0.4em] rounded-md bg-exit-black border border-slate-900/10 py-4 outline-none focus:border-exit-red" />
               </div>
               <div>
                 <label className="label text-[10px] text-exit-cream/50">PLAYER NAME</label>
                 <input value={name} onChange={(e) => setName(e.target.value.slice(0, 12))} placeholder="Enter your name"
-                  className="mt-2 w-full rounded-md bg-exit-black border border-white/15 px-4 py-3 outline-none focus:border-exit-red" />
+                  className="mt-2 w-full rounded-md bg-exit-black border border-slate-900/10 px-4 py-3 outline-none focus:border-exit-red" />
               </div>
               <div>
                 <label className="label text-[10px] text-exit-cream/50">CHOOSE AVATAR</label>
                 <div className="mt-2 grid grid-cols-8 gap-2">
                   {AVATARS.map((a) => (
-                    <button key={a} onClick={() => setAvatar(a)} className={`aspect-square rounded-md border text-xl grid place-items-center transition-all ${avatar === a ? 'border-exit-red bg-exit-red/15 text-exit-red' : 'border-white/10 text-exit-cream/60 hover:border-white/30'}`}>{a}</button>
+                    <button key={a} onClick={() => setAvatar(a)} className={`aspect-square rounded-md border text-xl grid place-items-center transition-all ${avatar === a ? 'border-exit-red bg-exit-red/15 text-exit-red' : 'border-slate-900/10 text-exit-cream/60 hover:border-slate-900/20'}`}>{a}</button>
                   ))}
                 </div>
               </div>
@@ -76,9 +76,9 @@ export default function Play() {
             </div>
 
             {/* table */}
-            <div className="relative rounded-[40px] border border-white/10 overflow-hidden min-h-[460px] grid place-items-center">
-              <img src={IMAGES.lobby} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(230,57,70,0.15),rgba(10,10,11,0.9))]" />
+            <div className="relative rounded-[40px] border border-slate-900/10 overflow-hidden min-h-[460px] grid place-items-center">
+              <img src={IMAGES.lobby} alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.14]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(29,78,216,0.10),rgba(255,255,255,0.86))]" />
 
               {/* center piles */}
               <div className="relative z-10 flex items-center gap-6">
@@ -102,7 +102,7 @@ export default function Play() {
                 ][i]
                 return (
                   <div key={i} className={`absolute z-10 ${pos} flex flex-col items-center`}>
-                    <div className={`h-11 w-11 rounded-full grid place-items-center text-xl border-2 ${p.you ? 'border-exit-red bg-exit-red/20 text-exit-red anim-pulseglow' : 'border-white/20 bg-exit-black/70 text-exit-cream/70'}`}>{p.avatar}</div>
+                    <div className={`h-11 w-11 rounded-full grid place-items-center text-xl border-2 ${p.you ? 'border-exit-red bg-exit-red/20 text-exit-red anim-pulseglow' : 'border-slate-900/15 bg-exit-black/70 text-exit-cream/70'}`}>{p.avatar}</div>
                     <div className={`mt-1 label text-[9px] ${p.you ? 'text-exit-red' : 'text-exit-cream/60'}`}>{p.name}</div>
                     <div className="flex -space-x-3 mt-1">
                       {[0,1,2].map((c)=>(<PlayingCard key={c} back className="w-6 h-9" />))}
@@ -113,7 +113,7 @@ export default function Play() {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
-              <button onClick={() => { setTurn((t) => t + 1); playShuffle() }} className="label text-[11px] px-6 py-3 rounded-md border border-white/15 hover:border-white/40 transition-colors">END TURN</button>
+              <button onClick={() => { setTurn((t) => t + 1); playShuffle() }} className="label text-[11px] px-6 py-3 rounded-md border border-slate-900/10 hover:border-slate-900/25 transition-colors">END TURN</button>
               <button onClick={() => setShowChallenge(true)} className="label text-[11px] font-semibold px-6 py-3 rounded-md bg-exit-red text-white hover:bg-exit-crimson transition-colors">TRIGGER CHALLENGE</button>
             </div>
           </div>
@@ -121,10 +121,10 @@ export default function Play() {
           <AnimatePresence>
             {showChallenge && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm grid place-items-center p-6" onClick={() => setShowChallenge(false)}>
-                <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} onClick={(e) => e.stopPropagation()} className="rounded-2xl border border-white/10 bg-exit-charcoal p-8">
+                <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} onClick={(e) => e.stopPropagation()} className="rounded-2xl border border-slate-900/10 bg-exit-charcoal p-8">
                   <h3 className="font-display text-3xl text-center mb-4">THE CHALLENGE</h3>
                   <ChallengeWheel />
-                  <button onClick={() => setShowChallenge(false)} className="mt-6 w-full label text-[10px] py-3 rounded-md border border-white/15">CLOSE</button>
+                  <button onClick={() => setShowChallenge(false)} className="mt-6 w-full label text-[10px] py-3 rounded-md border border-slate-900/10">CLOSE</button>
                 </motion.div>
               </motion.div>
             )}

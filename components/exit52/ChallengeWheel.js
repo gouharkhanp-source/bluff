@@ -35,7 +35,7 @@ export default function ChallengeWheel() {
           <div className="w-0 h-0 border-l-[12px] border-r-[12px] border-t-[22px] border-l-transparent border-r-transparent border-t-exit-cream drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />
         </div>
         <div
-          className="relative aspect-square rounded-full border-4 border-white/15 shadow-[0_0_60px_-10px_rgba(230,57,70,0.6)]"
+          className="relative aspect-square rounded-full border-4 border-slate-900/10 shadow-[0_0_60px_-10px_rgba(230,57,70,0.6)]"
           style={{ background: gradient, transform: `rotate(${rot}deg)`, transition: 'transform 4.1s cubic-bezier(0.16,1,0.3,1)' }}
         >
           {CHALLENGES.map((c, i) => (
@@ -49,7 +49,7 @@ export default function ChallengeWheel() {
               </span>
             </div>
           ))}
-          <div className="absolute inset-0 m-auto h-16 w-16 rounded-full bg-exit-black border-4 border-white/20 grid place-items-center">
+          <div className="absolute inset-0 m-auto h-16 w-16 rounded-full bg-exit-black border-4 border-slate-900/15 grid place-items-center">
             <span className="font-display text-exit-red text-lg">52</span>
           </div>
         </div>
