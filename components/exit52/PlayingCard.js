@@ -1,5 +1,6 @@
 'use client'
 import { cn } from '@/lib/utils'
+import { ASSETS } from '@/lib/exit52/images'
 
 // Reusable playing card. Modes:
 //  - back: render EXIT 52 card back
@@ -21,20 +22,8 @@ export default function PlayingCard({
 }) {
   if (back) {
     return (
-      <div
-        className={cn(
-          'relative rounded-xl border border-white/15 card-back-pattern overflow-hidden shadow-2xl',
-          className
-        )}
-        style={style}
-      >
-        <div className="absolute inset-[6px] rounded-lg border border-exit-red/40" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <div className="font-display text-exit-red/90 leading-none text-2xl md:text-3xl">52</div>
-            <div className="label text-[7px] md:text-[8px] text-white/60 mt-1">EXIT</div>
-          </div>
-        </div>
+      <div className={cn('relative overflow-hidden rounded-xl', className)} style={style}>
+        <img src={ASSETS.cardCover} alt="EXIT 52 card" className="absolute inset-0 w-full h-full object-contain rounded-xl" />
         {children}
       </div>
     )
