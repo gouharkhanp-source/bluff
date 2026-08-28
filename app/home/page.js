@@ -32,7 +32,6 @@ export default function HomePage() {
     <SiteShell>
       {/* HERO */}
       <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-16">
-        <img src={IMAGES.hero} alt="Scattered EXIT 52 playing cards on a dark table" className="absolute inset-0 h-full w-full object-cover opacity-[0.15]" />
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/80 via-exit-black/70 to-exit-black" />
         <div className="absolute inset-0 bg-gradient-to-r from-exit-black via-exit-black/40 to-transparent" />
         <FallingCards count={12} />
@@ -59,18 +58,14 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* floating card cluster */}
-          <div className="relative hidden lg:block h-[420px]">
+          {/* floating real-deck cluster */}
+          <div className="relative hidden lg:block h-[480px]">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="anim-floaty" style={{ ['--r']: '-14deg' }}>
-                <PlayingCard back className="w-40 h-56 absolute -left-32 top-4" style={{ transform: 'rotate(-14deg)' }} />
-              </div>
-              <div className="anim-floaty" style={{ animationDelay: '0.8s' }}>
-                <PlayingCard rank="5" suit="♦" red className="w-44 h-64 relative z-10" />
-              </div>
-              <div className="anim-floaty" style={{ animationDelay: '1.4s', ['--r']: '16deg' }}>
-                <PlayingCard rank="2" suit="♣" className="w-40 h-56 absolute -right-32 top-6" style={{ transform: 'rotate(16deg)' }} />
-              </div>
+              <img src={ASSETS.s1} alt="Game Changer card" className="w-44 absolute -left-44 top-8 drop-shadow-2xl anim-floaty" style={{ ['--r']: '-16deg' }} />
+              <img src={ASSETS.a1} alt="Lucky Joker card" className="w-40 absolute -left-16 top-24 drop-shadow-2xl anim-floaty" style={{ animationDelay: '1.1s', ['--r']: '-6deg' }} />
+              <img src={ASSETS.a3} alt="Ultimate Victor card" className="w-52 relative z-10 drop-shadow-2xl anim-floaty" style={{ animationDelay: '0.6s' }} />
+              <img src={ASSETS.s2} alt="Virus Attacker card" className="w-40 absolute -right-16 top-24 drop-shadow-2xl anim-floaty" style={{ animationDelay: '1.4s', ['--r']: '8deg' }} />
+              <img src={ASSETS.a5} alt="Exit Phantom card" className="w-44 absolute -right-44 top-8 drop-shadow-2xl anim-floaty" style={{ animationDelay: '0.9s', ['--r']: '16deg' }} />
             </div>
           </div>
         </div>

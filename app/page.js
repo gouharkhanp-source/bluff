@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import PlayingCard from '@/components/exit52/PlayingCard'
+import { ASSETS } from '@/lib/exit52/images'
 import { playFlip, playShuffle } from '@/lib/exit52/sound'
 import { track, EVENTS } from '@/lib/exit52/analytics'
 
@@ -91,7 +92,7 @@ export default function EntryGate() {
                 <PlayingCard back className="w-full h-full" />
               </div>
               <div className="absolute inset-0 backface-hidden rotate-y-180">
-                <PlayingCard rank="A" suit="♠" className="w-full h-full" />
+                <img src={ASSETS.a3} alt="EXIT 52 Ultimate Victor card" className="w-full h-full object-contain drop-shadow-2xl" />
               </div>
             </div>
           </motion.button>
