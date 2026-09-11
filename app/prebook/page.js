@@ -25,8 +25,25 @@ export default function PreBook() {
 
   useEffect(() => {
     loadCfg()
-    const q = new URLSearchParams(window.location.search).get('edition')
+    const params = new URLSearchParams(window.location.search)
+    const q = params.get('edition')
     if (q && EDITIONS.find((e) => e.id === q)) setForm((f) => ({ ...f, edition: q }))
+
+    const sessionId = params.get('session_id')
+    if (params.get('paid') === '1' && sessionId) {
+      fetch(`/api/checkout/verify?session_id=${encodeURIComponent(sessionId)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.paid && data.reservation) {
+            setDone(data.reservation)
+            setBurst((b) => b + 1)
+            if (data.config) { setCfg(data.config); setBarPct(data.config.percent) }
+            track(EVENTS.reservationComplete, { edition: data.reservation.edition, via: 'stripe-verified' })
+          }
+          window.history.replaceState({}, '', '/prebook')
+        })
+        .catch(() => {})
+    }
     track(EVENTS.reservationStart)
   }, [])
 
@@ -43,15 +60,21 @@ export default function PreBook() {
   const submit = async () => {
     setSubmitting(true)
     try {
-      const res = await fetch('/api/reservations', {
+      const res = await fetch('/api/checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ edition: form.edition, name: form.name, email: form.email, shipping: { address: form.address, city: form.city, country: form.country }, deposit: form.deposit }),
       })
       const data = await res.json()
+      if (data.mode === 'stripe' && data.url) {
+        track(EVENTS.reservationComplete, { edition: form.edition, via: 'stripe' })
+        window.location.assign(data.url)
+        return
+      }
+      // Fallback (no-charge reservation)
       setDone(data.reservation)
       setBurst((b) => b + 1)
       if (data.config) { setCfg(data.config); setBarPct(data.config.percent) }
-      track(EVENTS.reservationComplete, { edition: form.edition })
+      track(EVENTS.reservationComplete, { edition: form.edition, via: 'prototype' })
     } catch (e) { /* noop */ } finally { setSubmitting(false) }
   }
 
@@ -136,7 +159,7 @@ export default function PreBook() {
                 <div className="mt-4 text-sm text-exit-cream/60">{EDITIONS.find((e) => e.id === done.edition)?.title}</div>
                 <div className="text-xs text-exit-cream/40 mt-1">Confirmation sent to {done.email}</div>
               </div>
-              <p className="mt-6 label text-[10px] text-exit-cream/40">DEPOSIT IS A PROTOTYPE — NO REAL CHARGE WAS MADE</p>
+              <p className="mt-6 label text-[10px] text-exit-cream/40">{cfg?.paymentsEnabled ? 'DEPOSIT RECEIVED · CONFIRMATION SENT TO YOUR EMAIL' : 'DEPOSIT IS A PROTOTYPE — NO REAL CHARGE WAS MADE'}</p>
             </motion.div>
           ) : (
             <div className="rounded-2xl border border-white/10 bg-exit-charcoal/40 p-6 md:p-10">
@@ -188,7 +211,7 @@ export default function PreBook() {
                           <button key={d} onClick={() => set('deposit', d)} className={`flex-1 rounded-xl border py-6 font-display text-3xl transition-all ${form.deposit === d ? 'border-exit-red bg-exit-red/10 text-exit-red' : 'border-white/10 hover:border-white/20'}`}>${d}</button>
                         ))}
                       </div>
-                      <p className="mt-4 label text-[10px] text-exit-cream/40">PROTOTYPE CHECKOUT — NO REAL PAYMENT IS PROCESSED</p>
+                      <p className="mt-4 label text-[10px] text-exit-cream/40">{cfg?.paymentsEnabled ? "YOU'LL BE REDIRECTED TO A SECURE STRIPE CHECKOUT" : 'PROTOTYPE CHECKOUT — NO REAL PAYMENT IS PROCESSED'}</p>
                     </div>
                   )}
                   {step === 4 && (
@@ -206,7 +229,7 @@ export default function PreBook() {
                 {step < 4 ? (
                   <button onClick={() => canNext() && setStep((s) => s + 1)} disabled={!canNext()} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white disabled:opacity-40">NEXT <ArrowRight size={14} /></button>
                 ) : (
-                  <button onClick={submit} disabled={submitting} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white disabled:opacity-60">{submitting ? 'RESERVING...' : 'CONFIRM YOUR EXIT'} <Check size={14} /></button>
+                  <button onClick={submit} disabled={submitting} className="inline-flex items-center gap-2 label text-[11px] font-semibold px-6 py-3 btn-pop bg-exit-red text-white disabled:opacity-60">{submitting ? (cfg?.paymentsEnabled ? 'OPENING CHECKOUT...' : 'RESERVING...') : (cfg?.paymentsEnabled ? 'PAY DEPOSIT SECURELY' : 'CONFIRM YOUR EXIT')} <Check size={14} /></button>
                 )}
               </div>
             </div>

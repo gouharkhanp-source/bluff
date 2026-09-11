@@ -42,7 +42,7 @@ export default function HomePage() {
         <div className="container relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center py-20">
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-cream px-4 py-1.5 mb-6">THE BLUFFING CARD GAME</span>
+              <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-6">THE BLUFFING CARD GAME</span>
               <h1 className="font-display text-6xl sm:text-6xl md:text-7xl leading-[1.08]">
                 PLAY YOUR<br /><span className="marker">CARDS.</span><br />
                 <span className="text-exit-red text-glow">FIND YOUR EXIT.</span>

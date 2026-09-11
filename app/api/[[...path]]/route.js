@@ -1,9 +1,26 @@
 import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 import { NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
 let client
 let db
+let stripeClient
+
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) return null
+  if (!stripeClient) stripeClient = new Stripe(key)
+  return stripeClient
+}
+
+const DEPOSIT_ALLOWLIST = [5, 10, 20]
+const EDITION_TITLES = {
+  'digital-founders': 'Digital Founders Pass',
+  'core-starter': 'Core Starter Deck',
+  'highway-hazard': 'Highway Hazard Expansion',
+  'collectors-vault': "Collector's Vault",
+}
 
 async function connectToMongo() {
   if (!client) {
@@ -42,6 +59,7 @@ async function getConfig(db) {
   }
   const { _id, ...clean } = cfg
   clean.percent = Math.min(100, Math.round((clean.reservedCount / clean.batchGoal) * 100))
+  clean.paymentsEnabled = !!process.env.STRIPE_SECRET_KEY
   return clean
 }
 
@@ -99,6 +117,80 @@ async function handleRoute(request, { params }) {
     if (route === '/reservations' && method === 'GET') {
       const list = await db.collection('reservations').find({}).sort({ createdAt: -1 }).limit(500).toArray()
       return handleCORS(NextResponse.json(list.map(({ _id, ...r }) => r)))
+    }
+
+    // ---- Stripe deposit checkout ----
+    // Creates a real Stripe Checkout session when STRIPE_SECRET_KEY is set;
+    // otherwise gracefully falls back to a no-charge reservation.
+    if (route === '/checkout' && method === 'POST') {
+      const body = await request.json()
+      if (!body.email || !body.edition) {
+        return handleCORS(NextResponse.json({ error: 'email and edition are required' }, { status: 400 }))
+      }
+      const deposit = DEPOSIT_ALLOWLIST.includes(Number(body.deposit)) ? Number(body.deposit) : 5
+      const base = { id: uuidv4(), edition: body.edition, name: body.name || '', email: body.email, shipping: body.shipping || {}, deposit, code: 'EX-' + uuidv4().slice(0, 6).toUpperCase(), createdAt: new Date() }
+      const stripe = getStripe()
+
+      if (!stripe) {
+        // Fallback: record reservation without charge (clearly labelled on UI)
+        const reservation = { ...base, status: 'reserved', paid: false, counted: true }
+        await db.collection('reservations').insertOne(reservation)
+        await db.collection('config').updateOne({ id: 'reservation' }, { $inc: { reservedCount: 1 }, $set: { updatedAt: new Date() } }, { upsert: true })
+        const { _id, ...clean } = reservation
+        return handleCORS(NextResponse.json({ mode: 'prototype', reservation: clean, config: await getConfig(db) }))
+      }
+
+      // Real Stripe hosted checkout
+      const reservation = { ...base, status: 'pending', paid: false, counted: false }
+      await db.collection('reservations').insertOne(reservation)
+      const currency = (process.env.STRIPE_DEPOSIT_CURRENCY || 'usd').toLowerCase()
+      const origin = process.env.NEXT_PUBLIC_BASE_URL
+      try {
+        const session = await stripe.checkout.sessions.create({
+          mode: 'payment',
+          customer_email: body.email,
+          line_items: [{
+            quantity: 1,
+            price_data: {
+              currency,
+              unit_amount: deposit * 100,
+              product_data: { name: `EXIT 52 Pre-book Deposit — ${EDITION_TITLES[body.edition] || body.edition}` },
+            },
+          }],
+          success_url: `${origin}/prebook?paid=1&session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${origin}/prebook?canceled=1`,
+          metadata: { reservationId: reservation.id, edition: body.edition },
+        }, { idempotencyKey: `prebook-${reservation.id}` })
+        await db.collection('reservations').updateOne({ id: reservation.id }, { $set: { stripeSessionId: session.id, updatedAt: new Date() } })
+        return handleCORS(NextResponse.json({ mode: 'stripe', url: session.url }))
+      } catch (err) {
+        console.error('Stripe session error:', err?.message)
+        await db.collection('reservations').updateOne({ id: reservation.id }, { $set: { status: 'checkout_error', updatedAt: new Date() } })
+        return handleCORS(NextResponse.json({ error: 'Unable to start checkout' }, { status: 500 }))
+      }
+    }
+
+    // Verify a completed Stripe checkout on return (server-side confirmation)
+    if (route === '/checkout/verify' && method === 'GET') {
+      const stripe = getStripe()
+      const sessionId = new URL(request.url).searchParams.get('session_id')
+      if (!stripe) return handleCORS(NextResponse.json({ error: 'Payments not configured' }, { status: 400 }))
+      if (!sessionId) return handleCORS(NextResponse.json({ error: 'session_id required' }, { status: 400 }))
+      const session = await stripe.checkout.sessions.retrieve(sessionId)
+      const reservationId = session?.metadata?.reservationId
+      const reservation = reservationId ? await db.collection('reservations').findOne({ id: reservationId }) : null
+      if (!reservation) return handleCORS(NextResponse.json({ error: 'Reservation not found' }, { status: 404 }))
+
+      if (session.payment_status === 'paid') {
+        if (!reservation.counted) {
+          await db.collection('reservations').updateOne({ id: reservation.id }, { $set: { status: 'paid', paid: true, counted: true, paidAt: new Date(), amountPaid: session.amount_total, updatedAt: new Date() } })
+          await db.collection('config').updateOne({ id: 'reservation' }, { $inc: { reservedCount: 1 }, $set: { updatedAt: new Date() } }, { upsert: true })
+        }
+        const updated = await db.collection('reservations').findOne({ id: reservation.id })
+        const { _id, ...clean } = updated
+        return handleCORS(NextResponse.json({ paid: true, reservation: clean, config: await getConfig(db) }))
+      }
+      return handleCORS(NextResponse.json({ paid: false, status: session.payment_status }))
     }
 
     return handleCORS(NextResponse.json({ error: `Route ${route} not found` }, { status: 404 }))

@@ -38,16 +38,19 @@ export default function HomePage() {
         <div className="container relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center py-20">
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-cream px-4 py-1.5 mb-6">THE BLUFFING CARD GAME</span>
+              <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-6">GAME NIGHTS · PARTIES · ROAD TRIPS</span>
               <h1 className="font-display text-6xl sm:text-6xl md:text-7xl leading-[1.05]">
-                PLAY YOUR<br /><span className="marker">CARDS.</span><br />
-                <span className="text-exit-red text-glow">FIND YOUR EXIT.</span>
+                THE GAME<br />YOUR <span className="marker">CREW</span><br />
+                <span className="text-exit-red text-glow">CAN&apos;T PUT DOWN.</span>
               </h1>
+              <p className="mt-6 max-w-md text-base md:text-lg text-exit-cream/60">
+                Fast rounds, ruthless bluffs and last-second sabotages — EXIT 52 turns any hangout into glorious chaos in under 15 minutes.
+              </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'hero' })} className="group inline-flex items-center gap-2 label text-xs font-semibold px-7 py-4 btn-pop bg-exit-red text-white">
                   PLAY FREE ONLINE <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/editions" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 btn-pop bg-exit-yellow text-exit-cream">
+                <Link href="/editions" onClick={() => track(EVENTS.preBook, { from: 'hero' })} className="inline-flex items-center label text-xs px-7 py-4 btn-pop bg-exit-yellow text-exit-ink">
                   SHOP THE DECK
                 </Link>
               </div>
@@ -79,7 +82,7 @@ export default function HomePage() {
               const Icon = o.icon
               return (
                 <motion.div key={o.label} initial={{ opacity: 0, scale: 0.6, rotate: -8 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 220, damping: 12, delay: i * 0.1 }}>
-                  <div className="rounded-3xl border-2 border-white/10 bg-exit-charcoal p-6 shadow-[4px_4px_0_0_#000000] hover-wiggle">
+                  <div className="rounded-3xl border-2 border-white/10 bg-exit-charcoal p-6 neon-edge jiggle-pop">
                     <div className="h-16 w-16 mx-auto rounded-full grid place-items-center" style={{ backgroundColor: o.color + '22' }}>
                       <Icon size={30} style={{ color: o.color }} />
                     </div>
@@ -96,7 +99,7 @@ export default function HomePage() {
               return (
                 <motion.div key={s.small} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.2 + i * 0.12 }} className="flex items-center gap-3">
                   <div className="h-12 w-12 rounded-full bg-exit-yellow grid place-items-center border-2 border-exit-ink anim-bobble">
-                    <Icon size={22} className="text-exit-cream" />
+                    <Icon size={22} className="text-exit-ink" />
                   </div>
                   <div className="text-left">
                     <div className="font-display text-4xl md:text-5xl text-exit-cream leading-none">{s.big}</div>
@@ -110,7 +113,7 @@ export default function HomePage() {
       </section>
 
       {/* THE HOOK */}
-      <section className="relative py-24 md:py-28 overflow-hidden bg-[#fff7f7]">
+      <section className="relative py-24 md:py-28 overflow-hidden bg-exit-charcoal border-y-2 border-white/10">
         <div className="container relative">
           <Reveal>
             <h2 className="font-display text-4xl md:text-6xl text-center text-exit-cream leading-[1.08]">WIN THE CARDS.<br /><span className="text-exit-red text-glow">OR FACE THE CHALLENGE.</span></h2>
@@ -126,7 +129,7 @@ export default function HomePage() {
       </section>
 
       {/* GAME MODES */}
-      <section className="relative py-24 bg-[#eef7f6] border-y-2 border-white/10">
+      <section className="relative py-24 bg-[#1b1140] border-y-2 border-white/10">
         <div className="container">
           <Reveal><h2 className="font-display text-4xl md:text-6xl text-exit-cream">PICK YOUR <span className="text-exit-red">MODE.</span></h2></Reveal>
           <div className="mt-10 grid lg:grid-cols-[0.9fr_1.1fr] gap-8">
@@ -159,7 +162,7 @@ export default function HomePage() {
             <p className="mt-4 text-exit-cream/60 max-w-lg mx-auto">Grab a deck, or jump into a free browser game right now.</p>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <Link href="/editions" onClick={() => track(EVENTS.preBook, { from: 'cta_band' })} className="label text-xs font-semibold px-8 py-4 btn-pop bg-exit-red text-white">SHOP THE DECK</Link>
-              <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'cta_band' })} className="label text-xs px-8 py-4 btn-pop bg-exit-yellow text-exit-cream">PLAY FREE ONLINE</Link>
+              <Link href="/play" onClick={() => track(EVENTS.playFree, { from: 'cta_band' })} className="label text-xs px-8 py-4 btn-pop bg-exit-yellow text-exit-ink">PLAY FREE ONLINE</Link>
             </div>
           </Reveal>
         </div>

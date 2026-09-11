@@ -1,309 +1,538 @@
 #!/usr/bin/env python3
 """
-Backend API Tests for EXIT 52 Reservation System
-Tests all /api endpoints with MongoDB backend
+EXIT 52 Backend API Test Suite
+Tests all /api endpoints with focus on Stripe checkout fallback mode
 """
 
 import requests
-import json
+import re
 import sys
 
-# Base URL from environment
+# Base URL from .env NEXT_PUBLIC_BASE_URL
 BASE_URL = "https://bluff-and-exit.preview.emergentagent.com/api"
 
-def print_test_header(test_name):
-    print(f"\n{'='*80}")
-    print(f"TEST: {test_name}")
-    print(f"{'='*80}")
-
-def print_result(passed, message):
-    status = "✅ PASS" if passed else "❌ FAIL"
-    print(f"{status}: {message}")
-
-def test_get_config():
-    """Test 1: GET /api/config - should return 200 with config including computed percent"""
-    print_test_header("GET /api/config - Reservation Tracker Config")
-    
+def test_get_config_with_payments_enabled():
+    """Test 1: GET /api/config returns paymentsEnabled=false and correct structure"""
+    print("\n=== Test 1: GET /api/config (with paymentsEnabled flag) ===")
     try:
         response = requests.get(f"{BASE_URL}/config", timeout=10)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {json.dumps(response.json(), indent=2)}")
+        print(f"Status: {response.status_code}")
         
-        # Check status code
         if response.status_code != 200:
-            print_result(False, f"Expected status 200, got {response.status_code}")
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
             return None
         
         data = response.json()
+        print(f"Response: {data}")
         
         # Check required fields
-        required_fields = ['batchLabel', 'batchGoal', 'reservedCount', 'percent']
-        missing_fields = [f for f in required_fields if f not in data]
+        required_fields = ['batchLabel', 'batchGoal', 'reservedCount', 'percent', 'paymentsEnabled']
+        for field in required_fields:
+            if field not in data:
+                print(f"❌ FAILED: Missing field '{field}'")
+                return None
         
-        if missing_fields:
-            print_result(False, f"Missing required fields: {missing_fields}")
-            return None
-        
-        # Check percent is computed correctly
-        expected_percent = min(100, round((data['reservedCount'] / data['batchGoal']) * 100))
-        if data['percent'] != expected_percent:
-            print_result(False, f"Percent mismatch: expected {expected_percent}, got {data['percent']}")
-            return None
-        
-        # Check percent is in valid range
-        if not (0 <= data['percent'] <= 100):
-            print_result(False, f"Percent out of range: {data['percent']}")
+        # Check paymentsEnabled is false
+        if data['paymentsEnabled'] != False:
+            print(f"❌ FAILED: paymentsEnabled should be false, got {data['paymentsEnabled']}")
             return None
         
         # Check no _id field
         if '_id' in data:
-            print_result(False, "MongoDB _id field should not be present in response")
+            print(f"❌ FAILED: MongoDB _id field should not be present")
             return None
         
-        print_result(True, f"Config returned correctly with {data['percent']}% computed from {data['reservedCount']}/{data['batchGoal']}")
-        return data
+        # Check percent is computed
+        expected_percent = min(100, round((data['reservedCount'] / data['batchGoal']) * 100))
+        if data['percent'] != expected_percent:
+            print(f"❌ FAILED: Percent should be {expected_percent}, got {data['percent']}")
+            return None
+        
+        reserved_count = data['reservedCount']
+        print(f"✅ PASSED: paymentsEnabled=false, reservedCount={reserved_count}, percent={data['percent']}%, no _id")
+        return reserved_count
         
     except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
+        print(f"❌ FAILED: Exception - {str(e)}")
         return None
 
-def test_post_reservation_valid():
-    """Test 2: POST /api/reservations with valid data - should return 200 with reservation and updated config"""
-    print_test_header("POST /api/reservations - Create Valid Reservation")
-    
+
+def test_post_checkout_valid(initial_count):
+    """Test 2: POST /api/checkout with valid data in fallback mode"""
+    print("\n=== Test 2: POST /api/checkout (valid data, fallback mode) ===")
     try:
-        # First get current config to check reservedCount increment
-        config_before = requests.get(f"{BASE_URL}/config", timeout=10).json()
-        print(f"Config before reservation: reservedCount = {config_before.get('reservedCount')}")
-        
-        # Create reservation
         payload = {
             "edition": "core-starter",
             "name": "Alex Rivera",
             "email": "alex.rivera@example.com",
-            "shipping": {
-                "address": "1 Highway Rd",
-                "city": "Metro",
-                "country": "US"
-            },
-            "deposit": 5
+            "deposit": 10
         }
+        response = requests.post(f"{BASE_URL}/checkout", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
         
-        response = requests.post(f"{BASE_URL}/reservations", json=payload, timeout=10)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {json.dumps(response.json(), indent=2)}")
-        
-        # Check status code
         if response.status_code != 200:
-            print_result(False, f"Expected status 200, got {response.status_code}")
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
             return False
         
         data = response.json()
+        print(f"Response keys: {data.keys()}")
         
-        # Check response structure
-        if 'reservation' not in data or 'config' not in data:
-            print_result(False, "Response should contain 'reservation' and 'config' fields")
+        # Check mode is 'prototype'
+        if data.get('mode') != 'prototype':
+            print(f"❌ FAILED: mode should be 'prototype', got {data.get('mode')}")
             return False
         
-        reservation = data['reservation']
-        config_after = data['config']
+        # Check reservation object
+        reservation = data.get('reservation')
+        if not reservation:
+            print(f"❌ FAILED: Missing 'reservation' object")
+            return False
         
         # Check reservation fields
-        required_fields = ['id', 'code', 'edition', 'email', 'name', 'shipping', 'deposit']
-        missing_fields = [f for f in required_fields if f not in reservation]
+        required_fields = ['id', 'code', 'status', 'deposit', 'edition', 'email']
+        for field in required_fields:
+            if field not in reservation:
+                print(f"❌ FAILED: Missing reservation field '{field}'")
+                return False
         
-        if missing_fields:
-            print_result(False, f"Reservation missing required fields: {missing_fields}")
+        # Check UUID format for id
+        uuid_pattern = r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+        if not re.match(uuid_pattern, reservation['id']):
+            print(f"❌ FAILED: id should be UUID format, got {reservation['id']}")
             return False
         
-        # Check code format (EX-XXXXXX)
-        if not reservation['code'].startswith('EX-') or len(reservation['code']) != 9:
-            print_result(False, f"Code format incorrect: {reservation['code']} (expected EX-XXXXXX)")
+        # Check code format EX-XXXXXX
+        code_pattern = r'^EX-[A-Z0-9]{6}$'
+        if not re.match(code_pattern, reservation['code']):
+            print(f"❌ FAILED: code should match ^EX-[A-Z0-9]{{6}}$, got {reservation['code']}")
+            return False
+        
+        # Check status is 'reserved'
+        if reservation['status'] != 'reserved':
+            print(f"❌ FAILED: status should be 'reserved', got {reservation['status']}")
+            return False
+        
+        # Check deposit is 10
+        if reservation['deposit'] != 10:
+            print(f"❌ FAILED: deposit should be 10, got {reservation['deposit']}")
+            return False
+        
+        # Check edition
+        if reservation['edition'] != 'core-starter':
+            print(f"❌ FAILED: edition should be 'core-starter', got {reservation['edition']}")
+            return False
+        
+        # Check email
+        if reservation['email'] != 'alex.rivera@example.com':
+            print(f"❌ FAILED: email mismatch")
             return False
         
         # Check no _id in reservation
         if '_id' in reservation:
-            print_result(False, "MongoDB _id field should not be present in reservation")
+            print(f"❌ FAILED: MongoDB _id should not be in reservation")
+            return False
+        
+        # Check config object
+        config = data.get('config')
+        if not config:
+            print(f"❌ FAILED: Missing 'config' object")
             return False
         
         # Check no _id in config
-        if '_id' in config_after:
-            print_result(False, "MongoDB _id field should not be present in config")
+        if '_id' in config:
+            print(f"❌ FAILED: MongoDB _id should not be in config")
             return False
         
-        # Check reservedCount incremented by exactly 1
-        expected_count = config_before['reservedCount'] + 1
-        if config_after['reservedCount'] != expected_count:
-            print_result(False, f"reservedCount should be {expected_count}, got {config_after['reservedCount']}")
-            return False
-        
-        print_result(True, f"Reservation created with code {reservation['code']}, reservedCount incremented from {config_before['reservedCount']} to {config_after['reservedCount']}")
+        print(f"✅ PASSED: mode='prototype', reservation with id={reservation['id'][:8]}..., code={reservation['code']}, status='reserved', deposit=10, no _id fields")
         return True
         
     except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
+        print(f"❌ FAILED: Exception - {str(e)}")
         return False
 
-def test_post_reservation_missing_email():
-    """Test 3: POST /api/reservations missing email - should return 400"""
-    print_test_header("POST /api/reservations - Missing Email (Validation)")
-    
-    try:
-        payload = {
-            "edition": "core-starter"
-        }
-        
-        response = requests.post(f"{BASE_URL}/reservations", json=payload, timeout=10)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {json.dumps(response.json(), indent=2)}")
-        
-        if response.status_code != 400:
-            print_result(False, f"Expected status 400, got {response.status_code}")
-            return False
-        
-        print_result(True, "Correctly returned 400 for missing email")
-        return True
-        
-    except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
-        return False
 
-def test_post_reservation_missing_edition():
-    """Test 4: POST /api/reservations missing edition - should return 400"""
-    print_test_header("POST /api/reservations - Missing Edition (Validation)")
-    
+def test_get_config_incremented(initial_count):
+    """Test 3: GET /api/config should show reservedCount incremented by 1"""
+    print("\n=== Test 3: GET /api/config (verify reservedCount incremented) ===")
     try:
-        payload = {
-            "email": "test@example.com"
-        }
-        
-        response = requests.post(f"{BASE_URL}/reservations", json=payload, timeout=10)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {json.dumps(response.json(), indent=2)}")
-        
-        if response.status_code != 400:
-            print_result(False, f"Expected status 400, got {response.status_code}")
-            return False
-        
-        print_result(True, "Correctly returned 400 for missing edition")
-        return True
-        
-    except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
-        return False
-
-def test_put_config():
-    """Test 5: PUT /api/config - should update config and recompute percent"""
-    print_test_header("PUT /api/config - Update Reservation Tracker")
-    
-    try:
-        payload = {
-            "batchLabel": "BATCH 02",
-            "batchGoal": 1000,
-            "reservedCount": 250
-        }
-        
-        response = requests.put(f"{BASE_URL}/config", json=payload, timeout=10)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {json.dumps(response.json(), indent=2)}")
+        response = requests.get(f"{BASE_URL}/config", timeout=10)
+        print(f"Status: {response.status_code}")
         
         if response.status_code != 200:
-            print_result(False, f"Expected status 200, got {response.status_code}")
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
             return False
         
         data = response.json()
+        new_count = data['reservedCount']
+        print(f"Initial count: {initial_count}, New count: {new_count}")
+        
+        if new_count != initial_count + 1:
+            print(f"❌ FAILED: reservedCount should be {initial_count + 1}, got {new_count}")
+            return False
+        
+        print(f"✅ PASSED: reservedCount incremented from {initial_count} to {new_count}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_post_checkout_missing_email():
+    """Test 4: POST /api/checkout missing email should return 400"""
+    print("\n=== Test 4: POST /api/checkout (missing email) ===")
+    try:
+        payload = {"edition": "core-starter"}
+        response = requests.post(f"{BASE_URL}/checkout", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 400:
+            print(f"❌ FAILED: Expected 400, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: {data}")
+        print(f"✅ PASSED: Returns 400 for missing email")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_post_checkout_missing_edition():
+    """Test 5: POST /api/checkout missing edition should return 400"""
+    print("\n=== Test 5: POST /api/checkout (missing edition) ===")
+    try:
+        payload = {"email": "test@example.com"}
+        response = requests.post(f"{BASE_URL}/checkout", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 400:
+            print(f"❌ FAILED: Expected 400, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: {data}")
+        print(f"✅ PASSED: Returns 400 for missing edition")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_post_checkout_invalid_deposit_7():
+    """Test 6: POST /api/checkout with deposit=7 should coerce to 5"""
+    print("\n=== Test 6: POST /api/checkout (deposit=7, should coerce to 5) ===")
+    try:
+        payload = {
+            "edition": "digital-founders",
+            "email": "jordan.smith@example.com",
+            "deposit": 7
+        }
+        response = requests.post(f"{BASE_URL}/checkout", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        reservation = data.get('reservation', {})
+        deposit = reservation.get('deposit')
+        
+        if deposit != 5:
+            print(f"❌ FAILED: deposit should be coerced to 5, got {deposit}")
+            return False
+        
+        print(f"✅ PASSED: deposit=7 coerced to 5")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_post_checkout_invalid_deposit_999():
+    """Test 7: POST /api/checkout with deposit=999 should coerce to 5"""
+    print("\n=== Test 7: POST /api/checkout (deposit=999, should coerce to 5) ===")
+    try:
+        payload = {
+            "edition": "highway-hazard",
+            "email": "casey.jones@example.com",
+            "deposit": 999
+        }
+        response = requests.post(f"{BASE_URL}/checkout", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        reservation = data.get('reservation', {})
+        deposit = reservation.get('deposit')
+        
+        if deposit != 5:
+            print(f"❌ FAILED: deposit should be coerced to 5, got {deposit}")
+            return False
+        
+        print(f"✅ PASSED: deposit=999 coerced to 5")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_get_checkout_verify_no_session_id():
+    """Test 8: GET /api/checkout/verify without session_id should return 400"""
+    print("\n=== Test 8: GET /api/checkout/verify (no session_id) ===")
+    try:
+        response = requests.get(f"{BASE_URL}/checkout/verify", timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 400:
+            print(f"❌ FAILED: Expected 400, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: {data}")
+        print(f"✅ PASSED: Returns 400 for missing session_id")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_get_checkout_verify_with_session_id():
+    """Test 9: GET /api/checkout/verify with session_id should return 400 'Payments not configured'"""
+    print("\n=== Test 9: GET /api/checkout/verify (with session_id, no Stripe key) ===")
+    try:
+        response = requests.get(f"{BASE_URL}/checkout/verify?session_id=cs_test_dummy", timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 400:
+            print(f"❌ FAILED: Expected 400, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: {data}")
+        
+        error_msg = data.get('error', '')
+        if error_msg != 'Payments not configured':
+            print(f"❌ FAILED: Expected error 'Payments not configured', got '{error_msg}'")
+            return False
+        
+        print(f"✅ PASSED: Returns 400 with error 'Payments not configured'")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_regression_put_config():
+    """Test 10: Regression - PUT /api/config should update and recompute percent"""
+    print("\n=== Test 10: Regression - PUT /api/config ===")
+    try:
+        payload = {
+            "batchLabel": "BATCH 09",
+            "batchGoal": 800,
+            "reservedCount": 400
+        }
+        response = requests.put(f"{BASE_URL}/config", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: {data}")
         
         # Check updated values
-        if data['batchLabel'] != "BATCH 02":
-            print_result(False, f"batchLabel not updated: {data['batchLabel']}")
+        if data.get('batchLabel') != 'BATCH 09':
+            print(f"❌ FAILED: batchLabel should be 'BATCH 09', got {data.get('batchLabel')}")
             return False
         
-        if data['batchGoal'] != 1000:
-            print_result(False, f"batchGoal not updated: {data['batchGoal']}")
+        if data.get('batchGoal') != 800:
+            print(f"❌ FAILED: batchGoal should be 800, got {data.get('batchGoal')}")
             return False
         
-        if data['reservedCount'] != 250:
-            print_result(False, f"reservedCount not updated: {data['reservedCount']}")
+        if data.get('reservedCount') != 400:
+            print(f"❌ FAILED: reservedCount should be 400, got {data.get('reservedCount')}")
             return False
         
-        # Check percent recomputed (250/1000 = 25%)
-        expected_percent = 25
-        if data['percent'] != expected_percent:
-            print_result(False, f"Percent should be {expected_percent}%, got {data['percent']}%")
+        # Check percent is recomputed to 50
+        expected_percent = 50  # 400/800 * 100
+        if data.get('percent') != expected_percent:
+            print(f"❌ FAILED: percent should be {expected_percent}, got {data.get('percent')}")
             return False
         
-        print_result(True, f"Config updated successfully, percent recomputed to {data['percent']}%")
+        print(f"✅ PASSED: Config updated, percent recomputed to 50%")
         return True
         
     except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
+        print(f"❌ FAILED: Exception - {str(e)}")
         return False
 
-def test_get_reservations():
-    """Test 6: GET /api/reservations - should return array of reservations, newest first, no _id"""
-    print_test_header("GET /api/reservations - List Reservations")
-    
+
+def test_regression_post_reservations():
+    """Test 11: Regression - POST /api/reservations should create reservation and increment count"""
+    print("\n=== Test 11: Regression - POST /api/reservations ===")
     try:
-        response = requests.get(f"{BASE_URL}/reservations", timeout=10)
-        print(f"Status Code: {response.status_code}")
+        # Get current count
+        config_response = requests.get(f"{BASE_URL}/config", timeout=10)
+        initial_count = config_response.json()['reservedCount']
+        
+        payload = {
+            "edition": "core-starter",
+            "email": "morgan.lee@example.com",
+            "name": "Morgan Lee"
+        }
+        response = requests.post(f"{BASE_URL}/reservations", json=payload, timeout=10)
+        print(f"Status: {response.status_code}")
         
         if response.status_code != 200:
-            print_result(False, f"Expected status 200, got {response.status_code}")
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
             return False
         
         data = response.json()
+        print(f"Response keys: {data.keys()}")
         
-        # Check it's an array
-        if not isinstance(data, list):
-            print_result(False, f"Expected array, got {type(data)}")
+        # Check reservation object
+        reservation = data.get('reservation')
+        if not reservation:
+            print(f"❌ FAILED: Missing 'reservation' object")
             return False
         
-        print(f"Returned {len(data)} reservations")
+        # Check code format
+        code_pattern = r'^EX-[A-Z0-9]{6}$'
+        if not re.match(code_pattern, reservation.get('code', '')):
+            print(f"❌ FAILED: code should match ^EX-[A-Z0-9]{{6}}$, got {reservation.get('code')}")
+            return False
         
-        # Check no _id fields in any reservation
+        # Check no _id
+        if '_id' in reservation:
+            print(f"❌ FAILED: MongoDB _id should not be in reservation")
+            return False
+        
+        # Check config
+        config = data.get('config')
+        if not config:
+            print(f"❌ FAILED: Missing 'config' object")
+            return False
+        
+        # Check reservedCount incremented
+        new_count = config.get('reservedCount')
+        if new_count != initial_count + 1:
+            print(f"❌ FAILED: reservedCount should be {initial_count + 1}, got {new_count}")
+            return False
+        
+        print(f"✅ PASSED: Reservation created with code {reservation['code']}, reservedCount incremented")
+        return True
+        
+    except Exception as e:
+        print(f"❌ FAILED: Exception - {str(e)}")
+        return False
+
+
+def test_regression_get_reservations():
+    """Test 12: Regression - GET /api/reservations should return sorted array without _id"""
+    print("\n=== Test 12: Regression - GET /api/reservations ===")
+    try:
+        response = requests.get(f"{BASE_URL}/reservations", timeout=10)
+        print(f"Status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"❌ FAILED: Expected 200, got {response.status_code}")
+            return False
+        
+        data = response.json()
+        print(f"Response: Array with {len(data)} reservations")
+        
+        if not isinstance(data, list):
+            print(f"❌ FAILED: Response should be an array")
+            return False
+        
+        # Check no _id in any reservation
         for i, reservation in enumerate(data):
             if '_id' in reservation:
-                print_result(False, f"Reservation {i} contains MongoDB _id field")
+                print(f"❌ FAILED: MongoDB _id found in reservation at index {i}")
                 return False
         
-        # Check sorting (newest first) if we have multiple reservations
+        # Check sorted by createdAt descending (newest first)
         if len(data) > 1:
             for i in range(len(data) - 1):
                 if 'createdAt' in data[i] and 'createdAt' in data[i+1]:
                     if data[i]['createdAt'] < data[i+1]['createdAt']:
-                        print_result(False, "Reservations not sorted by createdAt descending (newest first)")
+                        print(f"❌ FAILED: Reservations not sorted by createdAt descending")
                         return False
         
-        # Print sample of first reservation if exists
-        if len(data) > 0:
-            print(f"Sample reservation: {json.dumps(data[0], indent=2)}")
-        
-        print_result(True, f"Retrieved {len(data)} reservations, no _id fields, sorted correctly")
+        print(f"✅ PASSED: Returns array of {len(data)} reservations, sorted newest first, no _id fields")
         return True
         
     except Exception as e:
-        print_result(False, f"Exception occurred: {str(e)}")
+        print(f"❌ FAILED: Exception - {str(e)}")
         return False
 
+
 def main():
-    print("\n" + "="*80)
-    print("EXIT 52 BACKEND API TEST SUITE")
-    print("="*80)
+    print("=" * 80)
+    print("EXIT 52 Backend API Test Suite")
+    print("Testing Stripe checkout fallback mode + regression tests")
+    print("=" * 80)
     
     results = []
     
-    # Run all tests in order
-    results.append(("GET /api/config", test_get_config() is not None))
-    results.append(("POST /api/reservations (valid)", test_post_reservation_valid()))
-    results.append(("POST /api/reservations (missing email)", test_post_reservation_missing_email()))
-    results.append(("POST /api/reservations (missing edition)", test_post_reservation_missing_edition()))
-    results.append(("PUT /api/config", test_put_config()))
-    results.append(("GET /api/reservations", test_get_reservations()))
+    # Test 1: GET /api/config with paymentsEnabled
+    initial_count = test_get_config_with_payments_enabled()
+    results.append(("GET /api/config (paymentsEnabled)", initial_count is not None))
+    
+    if initial_count is None:
+        print("\n⚠️  Cannot proceed with tests that depend on initial reservedCount")
+        sys.exit(1)
+    
+    # Test 2: POST /api/checkout valid
+    results.append(("POST /api/checkout (valid, fallback)", test_post_checkout_valid(initial_count)))
+    
+    # Test 3: GET /api/config incremented
+    results.append(("GET /api/config (incremented)", test_get_config_incremented(initial_count)))
+    
+    # Test 4: POST /api/checkout missing email
+    results.append(("POST /api/checkout (missing email)", test_post_checkout_missing_email()))
+    
+    # Test 5: POST /api/checkout missing edition
+    results.append(("POST /api/checkout (missing edition)", test_post_checkout_missing_edition()))
+    
+    # Test 6: POST /api/checkout deposit=7
+    results.append(("POST /api/checkout (deposit=7→5)", test_post_checkout_invalid_deposit_7()))
+    
+    # Test 7: POST /api/checkout deposit=999
+    results.append(("POST /api/checkout (deposit=999→5)", test_post_checkout_invalid_deposit_999()))
+    
+    # Test 8: GET /api/checkout/verify no session_id
+    results.append(("GET /api/checkout/verify (no session_id)", test_get_checkout_verify_no_session_id()))
+    
+    # Test 9: GET /api/checkout/verify with session_id
+    results.append(("GET /api/checkout/verify (no Stripe key)", test_get_checkout_verify_with_session_id()))
+    
+    # Test 10: Regression - PUT /api/config
+    results.append(("PUT /api/config (regression)", test_regression_put_config()))
+    
+    # Test 11: Regression - POST /api/reservations
+    results.append(("POST /api/reservations (regression)", test_regression_post_reservations()))
+    
+    # Test 12: Regression - GET /api/reservations
+    results.append(("GET /api/reservations (regression)", test_regression_get_reservations()))
     
     # Summary
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("TEST SUMMARY")
-    print("="*80)
+    print("=" * 80)
     
     passed = sum(1 for _, result in results if result)
     total = len(results)
@@ -320,6 +549,7 @@ def main():
     else:
         print(f"\n⚠️  {total - passed} test(s) failed")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

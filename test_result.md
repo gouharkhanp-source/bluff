@@ -165,6 +165,51 @@ backend:
         -agent: "testing"
         -comment: "✅ PASSED - Returns 200 with array of reservations. Correctly sorted by createdAt descending (newest first). No MongoDB _id fields in any reservation. Retrieved 1 reservation successfully with all fields intact (id, edition, name, email, shipping, deposit, code, createdAt)."
 
+  - task: "POST /api/checkout - Stripe hosted checkout with graceful no-key fallback"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "New endpoint. Requires email + edition (400 otherwise). Deposit validated against allowlist [5,10,20] (defaults 5). When STRIPE_SECRET_KEY is UNSET (current state), it must NOT call Stripe and instead return {mode:'prototype', reservation:{id,code,status:'reserved',...}, config} and increment config.reservedCount by 1. When STRIPE_SECRET_KEY is set it returns {mode:'stripe', url} (cannot be tested without a key). Test the no-key fallback path only. No Mongo _id should leak."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ PASSED - Tested fallback mode (STRIPE_SECRET_KEY unset). (1) POST /api/checkout with valid data returns 200 {mode:'prototype', reservation:{id (UUID), code (EX-2D3D51 format), status:'reserved', deposit:10, edition:'core-starter', email}, config}. No _id fields. (2) reservedCount increments by exactly 1 (341→342). (3) Missing email or edition returns 400 with error 'email and edition are required'. (4) Invalid deposits (7, 999) correctly coerced to 5 (allowlist enforcement). All requirements met."
+
+  - task: "GET /api/checkout/verify - server-side Stripe session verification"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "New endpoint. Without STRIPE_SECRET_KEY it must return 400 {error:'Payments not configured'}. Missing session_id returns 400. (Full paid verification requires a real Stripe key + session, so only the not-configured/400 path is testable now.)"
+        -working: true
+        -agent: "testing"
+        -comment: "✅ PASSED - Tested fallback behavior (STRIPE_SECRET_KEY unset). (1) GET /api/checkout/verify (no session_id query param) returns 400 {error:'Payments not configured'}. (2) GET /api/checkout/verify?session_id=cs_test_dummy returns 400 {error:'Payments not configured'}. Both scenarios correctly handled. Note: The endpoint returns 400 'Payments not configured' immediately when Stripe key is unset, regardless of session_id presence (line 177 in route.js checks stripe first)."
+
+  - task: "GET /api/config - now includes paymentsEnabled flag"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "getConfig now returns paymentsEnabled:boolean (=!!STRIPE_SECRET_KEY). Currently should be false. Verify existing config fields still intact (batchLabel, batchGoal, reservedCount, percent, no _id)."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ PASSED - GET /api/config returns 200 with paymentsEnabled:false (STRIPE_SECRET_KEY unset). All existing fields intact: {id:'reservation', batchLabel:'BATCH 01', batchGoal:500, reservedCount:341, percent:68, updatedAt, paymentsEnabled:false}. No MongoDB _id field. Percent correctly computed (68%). All requirements met."
+
 frontend:
   - task: "Heading spacing / typography legibility (funky Luckiest Guy headings not congested)"
     implemented: true
@@ -195,13 +240,12 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.1"
-  test_sequence: 1
+  version: "1.2"
+  test_sequence: 2
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "Heading spacing / typography legibility (funky Luckiest Guy headings not congested)"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -215,3 +259,7 @@ agent_communication:
     -message: "BUG FIX VERIFICATION NEEDED (frontend/UI). User said headline text 'looks congested'. I loosened tight line-heights and set .font-display line-height:1.06. Please verify on these pages that big 'Luckiest Guy' headings are NOT congested — lines must have clear vertical gaps, no overlapping glyphs, no clipped descenders, and the yellow highlighter behind 'CARDS.' must not touch the line below: (1) /home hero 'PLAY YOUR / CARDS. / FIND YOUR EXIT.' and the 'NO APP. NO COMPLEX HARDWARE. JUST DEAL, PLAY & EXIT.' block and section H2s like 'KNOW YOUR CARDS.' / 'THE SABOTAGE CARDS.' (2) /how-to-play 'HOW EXIT 52 WORKS' and 'BUT THERE'S A CATCH...' (3) /editions 'HOW DO YOU WANT TO EXIT?' (4) /prebook 'YOUR EXIT IS WAITING.' and 'WHAT'S IN THE PACK.'. Test desktop (1920x900) and mobile (390x844). Report whether headings read cleanly with adequate line spacing."
     -agent: "testing"
     -message: "✅ TYPOGRAPHY SPACING BUG FIX VERIFIED SUCCESSFULLY. Tested all 4 pages at desktop (1920x900) and mobile (390x844). All pages load HTTP 200, no console errors. CRITICAL FINDING: Yellow marker behind 'CARDS.' has clear separation from 'FIND YOUR EXIT.' line below - NO OVERLAP. All multi-line headings (Home hero, How-to-play 'THE GOLDEN RULE', Editions, Prebook) have clear vertical spacing between lines, no overlapping glyphs, no clipped descenders/ascenders. Line-height adjustments (leading-[1.05], leading-[1.08], .font-display line-height:1.06) working perfectly. Typography is clean and readable on both desktop and mobile. Bug fix is complete and successful."
+    -agent: "main"
+    -message: "NEW: Stripe deposit checkout added. Please test BACKEND ONLY (no frontend). STRIPE_SECRET_KEY is intentionally UNSET right now, so test the graceful fallback paths: (1) POST /api/checkout with {edition:'core-starter', name, email, deposit:10} -> expect 200 {mode:'prototype', reservation:{id, code (EX-XXXXXX), status:'reserved', deposit:10, edition, email}, config:{percent, reservedCount}} and reservedCount must increase by exactly 1 vs a prior GET /api/config. (2) POST /api/checkout missing email OR edition -> 400. (3) POST /api/checkout with an invalid deposit (e.g. 7 or 999) -> should coerce to 5 (deposit in response must be 5). (4) GET /api/checkout/verify (no session_id) -> 400. (5) GET /api/checkout/verify?session_id=cs_test_x -> 400 with error 'Payments not configured' (because no key). (6) GET /api/config must now include paymentsEnabled:false and still have no _id. (7) Regression: existing GET/PUT /api/config and POST/GET /api/reservations still work. Ensure NO Mongo _id leaks anywhere."
+    -agent: "testing"
+    -message: "✅ ALL STRIPE CHECKOUT TESTS PASSED (12/12). Comprehensive backend testing completed: NEW FEATURES: (1) GET /api/config now includes paymentsEnabled:false (STRIPE_SECRET_KEY unset), all existing fields intact, no _id. (2) POST /api/checkout in fallback mode returns {mode:'prototype', reservation:{id (UUID), code (EX-XXXXXX), status:'reserved', deposit, edition, email}, config}, increments reservedCount by exactly 1 (341→342), no _id fields. (3) POST /api/checkout validation: missing email/edition returns 400 'email and edition are required'. (4) POST /api/checkout deposit coercion: invalid deposits (7, 999) correctly coerced to 5 (allowlist [5,10,20]). (5) GET /api/checkout/verify returns 400 'Payments not configured' when no session_id or with dummy session_id (Stripe key unset). REGRESSION: (6) PUT /api/config updates and recomputes percent (50%). (7) POST /api/reservations creates reservation with EX-XXXXXX code, increments count. (8) GET /api/reservations returns sorted array (newest first), no _id. All backend APIs working perfectly. No MongoDB _id leaks anywhere. Ready for main agent to summarize and finish."

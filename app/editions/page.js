@@ -60,7 +60,7 @@ export default function Editions() {
         <div className="container grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {EDITIONS.map((e, i) => (
             <Reveal key={e.id} delay={i * 0.06}>
-              <div className="group h-full rounded-2xl border border-white/10 bg-exit-charcoal p-5 flex flex-col hover:border-exit-red/50 hover:-translate-y-1 transition-all shadow-[0_18px_40px_-28px_rgba(15,30,61,0.5)]">
+              <div className="group h-full rounded-2xl border border-white/10 bg-exit-charcoal p-5 flex flex-col neon-edge hover:border-exit-red/50 hover:-translate-y-1">
                 {/* product photo */}
                 <div className="relative rounded-xl overflow-hidden bg-[#f4f2fb] aspect-[4/3] grid place-items-center p-3">
                   {e.img ? (

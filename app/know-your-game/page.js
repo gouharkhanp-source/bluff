@@ -13,7 +13,7 @@ export default function KnowYourGame() {
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>
-            <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-cream px-4 py-1.5 mb-5">KNOW YOUR GAME</span>
+            <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-5">KNOW YOUR GAME</span>
             <h1 className="font-display text-5xl md:text-7xl text-exit-cream">HOW EXIT 52 <span className="text-exit-red">WORKS.</span></h1>
             <p className="mt-3 text-exit-cream/60">3 steps. One goal. Find your EXIT.</p>
           </Reveal>
@@ -25,7 +25,7 @@ export default function KnowYourGame() {
         <div className="container grid md:grid-cols-3 gap-6">
           {HOW_TO_STEPS.map((s, i) => (
             <Reveal key={s.no} delay={i * 0.08}>
-              <div className="h-full rounded-3xl border-2 border-white/10 bg-exit-charcoal p-7">
+              <div className="h-full rounded-3xl border-2 border-white/10 bg-exit-charcoal p-7 neon-edge jiggle-pop">
                 <div className="font-display text-5xl text-exit-red">{s.no}</div>
                 <h3 className="font-cond text-xl mt-2 text-exit-cream">{s.title}</h3>
                 <p className="mt-2 text-sm text-exit-cream/60">{s.body}</p>
@@ -76,7 +76,7 @@ export default function KnowYourGame() {
       </section>
 
       {/* GOLDEN RULE */}
-      <section className="py-24 text-center bg-[#f3f2fc]">
+      <section className="py-24 text-center bg-exit-charcoal">
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">THE GOLDEN RULE</span>
