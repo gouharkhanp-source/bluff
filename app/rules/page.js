@@ -10,7 +10,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function Rules() {
   return (
-    <SiteShell>
+    <SiteShell tone="#f3f2fc">
       <section className="pt-32 pb-10 text-center">
         <div className="container">
           <Reveal>

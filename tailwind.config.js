@@ -43,9 +43,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        display: ['Luckiest Guy', 'Anton', 'cursive'],
-        cond: ['Oswald', 'sans-serif'],
-        sans: ['Fredoka', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Baloo 2', 'Inter', 'sans-serif'],
+        cond: ['Baloo 2', 'Inter', 'sans-serif'],
+        sans: ['Baloo 2', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
       keyframes: {

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Luckiest+Guy&family=Fredoka:wght@400;500;600;700&family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -38,7 +38,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Fredoka', 'Inter', system-ui, sans-serif;
+    font-family: 'Baloo 2', 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -53,8 +53,8 @@
 }
 
 @layer utilities {
-  .font-display { font-family: 'Luckiest Guy', 'Anton', cursive; letter-spacing: 0.02em; line-height: 1.06; }
-  .font-cond { font-family: 'Oswald', sans-serif; }
+  .font-display { font-family: 'Baloo 2', 'Inter', sans-serif; font-weight: 800; letter-spacing: 0; line-height: 1.08; }
+  .font-cond { font-family: 'Baloo 2', 'Inter', sans-serif; font-weight: 700; }
   .perspective { perspective: 1400px; }
   .preserve-3d { transform-style: preserve-3d; }
   .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }

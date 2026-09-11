@@ -29,7 +29,7 @@ export default function Play() {
   const players = [{ name: name || 'YOU', avatar, you: true }, ...BOTS.slice(0, 3).map((b, i) => ({ name: b, avatar: AVATARS[(i + 3) % AVATARS.length], you: false }))]
 
   return (
-    <SiteShell>
+    <SiteShell tone="#f6f7fb">
       {!joined ? (
         <section className="pt-32 pb-24 min-h-[80vh] flex items-center">
           <div className="container max-w-md">

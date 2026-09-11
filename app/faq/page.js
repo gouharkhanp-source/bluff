@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 export default function FAQ() {
   return (
-    <SiteShell>
+    <SiteShell tone="#eef7ff">
       <section className="pt-32 pb-10 text-center">
         <div className="container">
           <Reveal>

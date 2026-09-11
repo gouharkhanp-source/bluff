@@ -15,7 +15,7 @@ const badgeColor = {
 
 export default function Editions() {
   return (
-    <SiteShell>
+    <SiteShell tone="#fff4f5">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>

@@ -21,7 +21,7 @@ export default function FallingCards({ count = 14, className = '' }) {
       delay: rand(i + 1.5) * 8,
       dur: 9 + rand(i + 2.5) * 9,
       size: 22 + rand(i + 3.5) * 30,
-      op: 0.1 + rand(i + 4.5) * 0.2,
+      op: 0.045 + rand(i + 4.5) * 0.08,
     }))
   }, [count])
 
