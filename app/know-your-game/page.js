@@ -9,13 +9,13 @@ import { ArrowRight } from 'lucide-react'
 
 export default function KnowYourGame() {
   return (
-    <SiteShell tone="#B7B1FF">
+    <SiteShell tone="#0c1f33">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>
-            <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-ink px-4 py-1.5 mb-5">KNOW YOUR GAME</span>
-            <h1 className="font-display text-5xl md:text-7xl text-exit-ink">HOW EXIT 52 <span className="text-exit-red">WORKS.</span></h1>
-            <p className="mt-3 text-exit-ink/60">3 steps. One goal. Find your EXIT.</p>
+            <span className="sticker inline-block label text-[10px] bg-exit-yellow text-exit-cream px-4 py-1.5 mb-5">KNOW YOUR GAME</span>
+            <h1 className="font-display text-5xl md:text-7xl text-exit-cream">HOW EXIT 52 <span className="text-exit-red">WORKS.</span></h1>
+            <p className="mt-3 text-exit-cream/60">3 steps. One goal. Find your EXIT.</p>
           </Reveal>
         </div>
       </section>
@@ -25,10 +25,10 @@ export default function KnowYourGame() {
         <div className="container grid md:grid-cols-3 gap-6">
           {HOW_TO_STEPS.map((s, i) => (
             <Reveal key={s.no} delay={i * 0.08}>
-              <div className="h-full rounded-3xl border-2 border-slate-900/10 bg-white p-7">
+              <div className="h-full rounded-3xl border-2 border-white/10 bg-exit-charcoal p-7">
                 <div className="font-display text-5xl text-exit-red">{s.no}</div>
-                <h3 className="font-cond text-xl mt-2 text-exit-ink">{s.title}</h3>
-                <p className="mt-2 text-sm text-exit-ink/60">{s.body}</p>
+                <h3 className="font-cond text-xl mt-2 text-exit-cream">{s.title}</h3>
+                <p className="mt-2 text-sm text-exit-cream/60">{s.body}</p>
               </div>
             </Reveal>
           ))}
@@ -64,10 +64,10 @@ export default function KnowYourGame() {
       </section>
 
       {/* WIN RULES */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-exit-charcoal">
         <div className="container text-center">
           <Reveal>
-            <h2 className="font-display text-4xl md:text-6xl text-exit-ink">KNOW YOUR <span className="text-exit-red">WIN RULES.</span></h2>
+            <h2 className="font-display text-4xl md:text-6xl text-exit-cream">KNOW YOUR <span className="text-exit-red">WIN RULES.</span></h2>
           </Reveal>
           <Reveal delay={0.1}>
             <img src={ASSETS.gameModesFan} alt="EXIT 52 win rules: Power Pair, Trio, Sequence and Pair" loading="lazy" className="mt-10 w-full max-w-5xl mx-auto h-auto" />
@@ -80,7 +80,7 @@ export default function KnowYourGame() {
         <div className="container">
           <Reveal>
             <span className="label text-[10px] text-exit-red">THE GOLDEN RULE</span>
-            <h2 className="font-display text-4xl md:text-6xl mt-3 text-exit-ink leading-[1.08]">PLAY YOUR CARDS.<br />COMPLETE YOUR FORMATION.<br /><span className="text-exit-red">REACH THE EXIT.</span></h2>
+            <h2 className="font-display text-4xl md:text-6xl mt-3 text-exit-cream leading-[1.08]">PLAY YOUR CARDS.<br />COMPLETE YOUR FORMATION.<br /><span className="text-exit-red">REACH THE EXIT.</span></h2>
             <Link href="/play" className="mt-8 inline-flex items-center gap-2 label text-xs font-semibold px-8 py-4 btn-pop bg-exit-red text-white">LET&apos;S PLAY <ArrowRight size={16} /></Link>
           </Reveal>
         </div>

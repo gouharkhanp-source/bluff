@@ -3,7 +3,7 @@ import SiteShell from '@/components/exit52/SiteShell'
 
 export default function Privacy() {
   return (
-    <SiteShell tone="#CFEDE4">
+    <SiteShell tone="#101820">
       <section className="pt-32 pb-28">
         <div className="container max-w-3xl">
           <h1 className="font-display text-5xl md:text-6xl mb-8">PRIVACY</h1>

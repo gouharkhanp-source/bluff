@@ -3,7 +3,7 @@ import SiteShell from '@/components/exit52/SiteShell'
 
 export default function Terms() {
   return (
-    <SiteShell tone="#DAD6F2">
+    <SiteShell tone="#12131c">
       <section className="pt-32 pb-28">
         <div className="container max-w-3xl">
           <h1 className="font-display text-5xl md:text-6xl mb-8">TERMS</h1>

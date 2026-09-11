@@ -58,7 +58,7 @@ export default function EntryGate() {
   }
 
   return (
-    <div className="relative min-h-screen text-exit-cream overflow-hidden grid place-items-center" style={{ backgroundColor: '#FF7A59' }}>
+    <div className="relative min-h-screen text-exit-cream overflow-hidden grid place-items-center" style={{ backgroundColor: '#0b0713' }}>
       {/* ambient glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full bg-exit-red/10 blur-[120px]" />

@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 15%;
-    --primary: 354 76% 50%;
+    --background: 222 47% 6%;
+    --foreground: 40 30% 94%;
+    --card: 222 40% 10%;
+    --card-foreground: 40 30% 94%;
+    --popover: 222 40% 10%;
+    --popover-foreground: 40 30% 94%;
+    --primary: 354 100% 62%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 214 32% 95%;
-    --secondary-foreground: 222 47% 15%;
-    --muted: 214 32% 95%;
-    --muted-foreground: 220 15% 42%;
-    --accent: 246 59% 45%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 354 76% 50%;
+    --secondary: 222 25% 16%;
+    --secondary-foreground: 40 30% 94%;
+    --muted: 222 25% 16%;
+    --muted-foreground: 220 15% 66%;
+    --accent: 246 100% 78%;
+    --accent-foreground: 222 47% 8%;
+    --destructive: 354 100% 62%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 25% 88%;
-    --input: 214 25% 85%;
-    --ring: 354 76% 50%;
+    --border: 222 20% 22%;
+    --input: 222 20% 24%;
+    --ring: 354 100% 62%;
     --radius: 0.6rem;
   }
 }
@@ -47,9 +47,9 @@
     color: #fff;
   }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: #eef1f7; }
-  ::-webkit-scrollbar-thumb { background: #c2ccdd; border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: #e8232b; }
+  ::-webkit-scrollbar-track { background: #0a0d18; }
+  ::-webkit-scrollbar-thumb { background: #2a3350; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #ff3b47; }
 }
 
 @layer utilities {
@@ -118,17 +118,17 @@
 .btn-pop {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   border-radius: 9999px;
-  border: 2.5px solid #0f1e3d;
-  box-shadow: 4px 4px 0 0 #0f1e3d;
+  border: 2.5px solid rgba(255,255,255,0.92);
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,0.55);
   transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease;
 }
-.btn-pop:hover { transform: translate(-2px,-2px) rotate(-1.5deg); box-shadow: 7px 7px 0 0 #0f1e3d; }
-.btn-pop:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 0 #0f1e3d; }
+.btn-pop:hover { transform: translate(-2px,-2px) rotate(-1.5deg); box-shadow: 7px 7px 0 0 rgba(0,0,0,0.55); }
+.btn-pop:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 0 rgba(0,0,0,0.55); }
 
 .sticker {
-  border: 2.5px solid #0f1e3d;
+  border: 2.5px solid #0a0d18;
   border-radius: 9999px;
-  box-shadow: 3px 3px 0 0 #0f1e3d;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.45);
   transform: rotate(-3deg);
 }
 .marker {

@@ -44,7 +44,7 @@ export default function Explainer() {
   const seek = (sec) => { setT(sec); if (!started) { setStarted(true); track(EVENTS.videoPlay) } }
 
   return (
-    <SiteShell tone="#6FE3D6">
+    <SiteShell tone="#0b2130">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>

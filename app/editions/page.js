@@ -45,7 +45,7 @@ export default function Editions() {
   const checkoutHref = items.length ? `/prebook?edition=${items[0].id}` : '/prebook'
 
   return (
-    <SiteShell tone="#FF9AA8">
+    <SiteShell tone="#2a0b14">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>
@@ -60,7 +60,7 @@ export default function Editions() {
         <div className="container grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {EDITIONS.map((e, i) => (
             <Reveal key={e.id} delay={i * 0.06}>
-              <div className="group h-full rounded-2xl border border-slate-900/10 bg-white p-5 flex flex-col hover:border-exit-red/50 hover:-translate-y-1 transition-all shadow-[0_18px_40px_-28px_rgba(15,30,61,0.5)]">
+              <div className="group h-full rounded-2xl border border-white/10 bg-exit-charcoal p-5 flex flex-col hover:border-exit-red/50 hover:-translate-y-1 transition-all shadow-[0_18px_40px_-28px_rgba(15,30,61,0.5)]">
                 {/* product photo */}
                 <div className="relative rounded-xl overflow-hidden bg-[#f4f2fb] aspect-[4/3] grid place-items-center p-3">
                   {e.img ? (
@@ -73,7 +73,7 @@ export default function Editions() {
                   ) : (
                     <span className="font-display text-5xl text-exit-cream/15">{e.no}</span>
                   )}
-                  <span className={`absolute top-2 right-2 label text-[9px] border rounded-full px-2 py-1 bg-white/90 ${badgeColor[e.badge] || 'text-exit-cream/60 border-slate-900/15'}`}>{e.badge}</span>
+                  <span className={`absolute top-2 right-2 label text-[9px] border rounded-full px-2 py-1 bg-exit-charcoal/90 ${badgeColor[e.badge] || 'text-exit-cream/60 border-white/15'}`}>{e.badge}</span>
                 </div>
 
                 <h3 className="font-cond font-bold text-lg mt-4 min-h-[52px]">{e.title}</h3>
@@ -88,7 +88,7 @@ export default function Editions() {
                 </ul>
 
                 {cart[e.id] ? (
-                  <div className="mt-6 flex items-center justify-between rounded-full border-2 border-exit-ink/70 p-1">
+                  <div className="mt-6 flex items-center justify-between rounded-full border-2 border-white/20/70 p-1">
                     <button onClick={() => dec(e.id)} aria-label="Remove one" className="grid place-items-center h-9 w-9 rounded-full bg-exit-charcoal hover:bg-exit-red hover:text-white transition-colors"><Minus size={15} /></button>
                     <span className="font-display text-lg">{cart[e.id]} in cart</span>
                     <button onClick={() => add(e.id)} aria-label="Add one" className="grid place-items-center h-9 w-9 rounded-full bg-exit-charcoal hover:bg-exit-red hover:text-white transition-colors"><Plus size={15} /></button>
@@ -111,7 +111,7 @@ export default function Editions() {
         <div className="container">
           <Reveal>
             <h2 className="font-display text-3xl md:text-5xl mb-8 text-center">COMPARE THE DECKS</h2>
-            <div className="overflow-x-auto rounded-2xl border border-slate-900/10 bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-exit-charcoal">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="bg-exit-charcoal/60">
@@ -123,7 +123,7 @@ export default function Editions() {
                 </thead>
                 <tbody>
                   {COMPARISON_ROWS.map((row, ri) => (
-                    <tr key={row.label} className={ri % 2 ? 'bg-slate-900/[0.03]' : ''}>
+                    <tr key={row.label} className={ri % 2 ? 'bg-white/[0.03]' : ''}>
                       <td className="p-4 text-exit-cream/70">{row.label}</td>
                       {row.values.map((v, ci) => (
                         <td key={ci} className="p-4 text-center">
@@ -150,7 +150,7 @@ export default function Editions() {
             className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4"
           >
             <div className="container">
-              <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-exit-ink bg-white px-5 py-3.5 shadow-[6px_6px_0_0_#0f1e3d]">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-white/20 bg-exit-charcoal px-5 py-3.5 shadow-[6px_6px_0_0_#000000]">
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="relative grid place-items-center h-11 w-11 rounded-full bg-exit-red text-white shrink-0">
                     <ShoppingCart size={18} />
