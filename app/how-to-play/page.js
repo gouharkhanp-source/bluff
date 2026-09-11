@@ -28,7 +28,7 @@ export default function HowToPlay() {
   ]
 
   return (
-    <SiteShell>
+    <SiteShell tone="#B7E778">
       <section className="pt-32 pb-16 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(230,57,70,0.12),transparent_60%)]" />
         <div className="container relative">

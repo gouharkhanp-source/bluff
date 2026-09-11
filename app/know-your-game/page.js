@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function KnowYourGame() {
   return (
-    <SiteShell tone="#f3f2fc">
+    <SiteShell tone="#B7B1FF">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>

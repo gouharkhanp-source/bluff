@@ -53,7 +53,7 @@ export default function PreBook() {
   }
 
   return (
-    <SiteShell tone="#fffaf0">
+    <SiteShell tone="#FFC24B">
       <section className="pt-28 pb-12 relative overflow-hidden">
         <img src={IMAGES.prebook} alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.12]" />
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/70 to-exit-black" />

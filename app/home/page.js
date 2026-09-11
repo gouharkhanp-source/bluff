@@ -28,7 +28,7 @@ export default function HomePage() {
   const active = GAME_MODES.find((m) => m.key === mode)
 
   return (
-    <SiteShell tone="#fffdf4">
+    <SiteShell tone="#FFD23F">
       {/* HERO */}
       <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-16">
         <FallingCards count={12} />
