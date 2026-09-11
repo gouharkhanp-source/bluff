@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import SiteShell from '@/components/exit52/SiteShell'
 import Reveal from '@/components/exit52/Reveal'
 import PlayingCard from '@/components/exit52/PlayingCard'
+import Confetti from '@/components/exit52/Confetti'
 import { IMAGES, ASSETS } from '@/lib/exit52/images'
 import { EDITIONS, PERKS } from '@/lib/exit52/data'
 import { track, EVENTS } from '@/lib/exit52/analytics'
@@ -17,6 +18,7 @@ export default function PreBook() {
   const [step, setStep] = useState(0)
   const [done, setDone] = useState(null)
   const [submitting, setSubmitting] = useState(false)
+  const [burst, setBurst] = useState(0)
   const [form, setForm] = useState({ edition: EDITIONS[1].id, name: '', email: '', address: '', city: '', country: '', deposit: 5 })
 
   const loadCfg = () => fetch('/api/config').then((r) => r.json()).then((c) => { setCfg(c); setTimeout(() => setBarPct(c.percent), 300) }).catch(() => {})
@@ -47,6 +49,7 @@ export default function PreBook() {
       })
       const data = await res.json()
       setDone(data.reservation)
+      setBurst((b) => b + 1)
       if (data.config) { setCfg(data.config); setBarPct(data.config.percent) }
       track(EVENTS.reservationComplete, { edition: form.edition })
     } catch (e) { /* noop */ } finally { setSubmitting(false) }
@@ -54,6 +57,7 @@ export default function PreBook() {
 
   return (
     <SiteShell tone="#FFC24B">
+      <Confetti fireKey={burst} />
       <section className="pt-28 pb-12 relative overflow-hidden">
         <img src={IMAGES.prebook} alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.12]" />
         <div className="absolute inset-0 bg-gradient-to-b from-exit-black/70 to-exit-black" />

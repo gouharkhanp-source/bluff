@@ -3,12 +3,14 @@ import { useState } from 'react'
 import { CHALLENGES } from '@/lib/exit52/data'
 import { playWheel } from '@/lib/exit52/sound'
 import { track, EVENTS } from '@/lib/exit52/analytics'
+import Confetti from './Confetti'
 
 export default function ChallengeWheel() {
   const seg = 360 / CHALLENGES.length
   const [rot, setRot] = useState(0)
   const [spinning, setSpinning] = useState(false)
   const [result, setResult] = useState(null)
+  const [burst, setBurst] = useState(0)
 
   const gradient = `conic-gradient(${CHALLENGES.map((c, i) => `${c.color} ${i * seg}deg ${(i + 1) * seg}deg`).join(',')})`
 
@@ -25,11 +27,13 @@ export default function ChallengeWheel() {
     setTimeout(() => {
       setResult(CHALLENGES[idx].label)
       setSpinning(false)
+      setBurst((b) => b + 1)
     }, 4200)
   }
 
   return (
     <div className="flex flex-col items-center">
+      <Confetti fireKey={burst} count={80} />
       <div className="relative" style={{ width: 320, maxWidth: '82vw' }}>
         <div className="absolute left-1/2 -translate-x-1/2 -top-2 z-20">
           <div className="w-0 h-0 border-l-[12px] border-r-[12px] border-t-[22px] border-l-transparent border-r-transparent border-t-exit-cream drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" />

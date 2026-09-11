@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X, Volume2, VolumeX } from 'lucide-react'
 import { NAV_LINKS } from '@/lib/exit52/data'
 import { isSoundEnabled, setSoundEnabled, playClick } from '@/lib/exit52/sound'
@@ -10,6 +11,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [sound, setSound] = useState(false)
+  const pathname = usePathname()
+  const isActive = (href) => pathname === href || (href !== '/home' && pathname?.startsWith(href))
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -41,15 +44,24 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="label text-[11px] text-exit-cream/70 hover:text-exit-cream transition-colors"
-            >
-              {l.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((l) => {
+            const active = isActive(l.href)
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={active ? 'page' : undefined}
+                className={`relative label text-[11px] transition-colors ${
+                  active ? 'text-exit-red font-semibold' : 'text-exit-cream/70 hover:text-exit-cream'
+                }`}
+              >
+                {l.label}
+                {active && (
+                  <span className="absolute -bottom-2 left-0 right-0 mx-auto h-[3px] w-5 rounded-full bg-exit-red" />
+                )}
+              </Link>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-2 md:gap-3">
@@ -87,16 +99,23 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden bg-exit-black/95 backdrop-blur-md border-b border-slate-900/10">
           <div className="container py-6 flex flex-col gap-5">
-            {NAV_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="label text-sm text-exit-cream/80"
-              >
-                {l.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((l) => {
+              const active = isActive(l.href)
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? 'page' : undefined}
+                  className={`label text-sm flex items-center gap-2 ${
+                    active ? 'text-exit-red font-semibold' : 'text-exit-cream/80'
+                  }`}
+                >
+                  {active && <span className="h-2 w-2 rounded-full bg-exit-red" />}
+                  {l.label}
+                </Link>
+              )
+            })}
             <div className="flex gap-3 pt-2">
               <Link href="/play" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs font-semibold py-3 btn-pop bg-exit-red text-white">PLAY FREE</Link>
               <Link href="/prebook" onClick={() => setOpen(false)} className="flex-1 text-center label text-xs py-3 rounded-full border-2 border-exit-ink/60 text-exit-cream">PRE-BOOK</Link>

@@ -1,10 +1,13 @@
 'use client'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import SiteShell from '@/components/exit52/SiteShell'
 import Reveal from '@/components/exit52/Reveal'
 import { EDITIONS, COMPARISON_ROWS } from '@/lib/exit52/data'
 import { track, EVENTS } from '@/lib/exit52/analytics'
-import { Check, X } from 'lucide-react'
+import { playClick } from '@/lib/exit52/sound'
+import { Check, X, ShoppingCart, Plus, Minus, ArrowRight } from 'lucide-react'
 
 const badgeColor = {
   DIGITAL: 'text-exit-amber border-exit-amber/40',
@@ -14,29 +17,68 @@ const badgeColor = {
 }
 
 export default function Editions() {
+  const [cart, setCart] = useState({})
+
+  const add = (id) => {
+    playClick()
+    setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }))
+    track(EVENTS.editionSelect, { edition: id, action: 'add-to-cart' })
+  }
+  const dec = (id) =>
+    setCart((c) => {
+      const n = (c[id] || 0) - 1
+      const next = { ...c }
+      if (n <= 0) delete next[id]
+      else next[id] = n
+      return next
+    })
+
+  const items = useMemo(
+    () =>
+      Object.entries(cart)
+        .map(([id, qty]) => ({ ...EDITIONS.find((e) => e.id === id), qty }))
+        .filter((e) => e.id),
+    [cart]
+  )
+  const count = items.reduce((s, i) => s + i.qty, 0)
+  const total = items.reduce((s, i) => s + i.qty * i.price, 0)
+  const checkoutHref = items.length ? `/prebook?edition=${items[0].id}` : '/prebook'
+
   return (
     <SiteShell tone="#FF9AA8">
       <section className="pt-32 pb-14 text-center">
         <div className="container">
           <Reveal>
-            <span className="label text-[10px] text-exit-red">GAME EDITIONS</span>
+            <span className="label text-[10px] text-exit-red">SHOP · GAME EDITIONS</span>
             <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[1.05]">HOW DO YOU WANT TO <span className="text-exit-red">EXIT?</span></h1>
+            <p className="mt-4 text-exit-cream/60 max-w-xl mx-auto">Pick your pack, add it to your cart and pre-book your place in the first batch.</p>
           </Reveal>
         </div>
       </section>
 
-      <section className="pb-20">
+      <section className={`pb-20 ${count ? 'md:pb-24' : ''}`}>
         <div className="container grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {EDITIONS.map((e, i) => (
             <Reveal key={e.id} delay={i * 0.06}>
-              <div className="group h-full rounded-2xl border border-slate-900/10 bg-exit-charcoal/40 p-6 flex flex-col hover:border-exit-red/50 transition-colors">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-3xl text-exit-cream/20">{e.no}</span>
-                  <span className={`label text-[9px] border rounded-full px-2 py-1 ${badgeColor[e.badge] || 'text-exit-cream/60 border-slate-900/15'}`}>{e.badge}</span>
+              <div className="group h-full rounded-2xl border border-slate-900/10 bg-white p-5 flex flex-col hover:border-exit-red/50 hover:-translate-y-1 transition-all shadow-[0_18px_40px_-28px_rgba(15,30,61,0.5)]">
+                {/* product photo */}
+                <div className="relative rounded-xl overflow-hidden bg-[#f4f2fb] aspect-[4/3] grid place-items-center p-3">
+                  {e.img ? (
+                    <img
+                      src={e.img}
+                      alt={`${e.title} — EXIT 52 edition`}
+                      loading="lazy"
+                      className="max-h-full w-auto object-contain transition-transform duration-300 group-hover:scale-[1.06] group-hover:-rotate-2"
+                    />
+                  ) : (
+                    <span className="font-display text-5xl text-exit-cream/15">{e.no}</span>
+                  )}
+                  <span className={`absolute top-2 right-2 label text-[9px] border rounded-full px-2 py-1 bg-white/90 ${badgeColor[e.badge] || 'text-exit-cream/60 border-slate-900/15'}`}>{e.badge}</span>
                 </div>
-                <h3 className="font-cond font-bold text-lg mt-4 min-h-[56px]">{e.title}</h3>
-                <p className="text-xs text-exit-cream/50 mt-1">{e.tagline}</p>
-                <div className="mt-4 font-display text-4xl">${e.price}</div>
+
+                <h3 className="font-cond font-bold text-lg mt-4 min-h-[52px]">{e.title}</h3>
+                <p className="text-xs text-exit-cream/50 -mt-1">{e.tagline}</p>
+                <div className="mt-3 font-display text-4xl">${e.price}</div>
                 <ul className="mt-4 space-y-2 flex-1">
                   {e.includes.map((inc) => (
                     <li key={inc} className="flex items-start gap-2 text-sm text-exit-cream/70">
@@ -44,10 +86,21 @@ export default function Editions() {
                     </li>
                   ))}
                 </ul>
-                <Link href={`/prebook?edition=${e.id}`} onClick={() => track(EVENTS.editionSelect, { edition: e.id })}
-                  className="mt-6 text-center label text-[11px] font-semibold py-3 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors">
-                  {e.cta}
-                </Link>
+
+                {cart[e.id] ? (
+                  <div className="mt-6 flex items-center justify-between rounded-full border-2 border-exit-ink/70 p-1">
+                    <button onClick={() => dec(e.id)} aria-label="Remove one" className="grid place-items-center h-9 w-9 rounded-full bg-exit-charcoal hover:bg-exit-red hover:text-white transition-colors"><Minus size={15} /></button>
+                    <span className="font-display text-lg">{cart[e.id]} in cart</span>
+                    <button onClick={() => add(e.id)} aria-label="Add one" className="grid place-items-center h-9 w-9 rounded-full bg-exit-charcoal hover:bg-exit-red hover:text-white transition-colors"><Plus size={15} /></button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => add(e.id)}
+                    className="mt-6 inline-flex items-center justify-center gap-2 label text-[11px] font-semibold py-3 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors"
+                  >
+                    <ShoppingCart size={15} /> ADD TO CART
+                  </button>
+                )}
               </div>
             </Reveal>
           ))}
@@ -58,7 +111,7 @@ export default function Editions() {
         <div className="container">
           <Reveal>
             <h2 className="font-display text-3xl md:text-5xl mb-8 text-center">COMPARE THE DECKS</h2>
-            <div className="overflow-x-auto rounded-2xl border border-slate-900/10">
+            <div className="overflow-x-auto rounded-2xl border border-slate-900/10 bg-white">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="bg-exit-charcoal/60">
@@ -85,6 +138,41 @@ export default function Editions() {
           </Reveal>
         </div>
       </section>
+
+      {/* Sticky cart bar */}
+      <AnimatePresence>
+        {count > 0 && (
+          <motion.div
+            initial={{ y: 90, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 90, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+            className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4"
+          >
+            <div className="container">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-exit-ink bg-white px-5 py-3.5 shadow-[6px_6px_0_0_#0f1e3d]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="relative grid place-items-center h-11 w-11 rounded-full bg-exit-red text-white shrink-0">
+                    <ShoppingCart size={18} />
+                    <span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 grid place-items-center rounded-full bg-exit-ink text-white text-[10px] font-bold">{count}</span>
+                  </span>
+                  <div className="min-w-0">
+                    <div className="font-cond font-bold text-sm truncate">{count} item{count > 1 ? 's' : ''} · ${total}</div>
+                    <div className="label text-[9px] text-exit-cream/45 truncate">{items.map((i) => `${i.title.split(' ')[0]}${i.qty > 1 ? ' ×' + i.qty : ''}`).join(' · ')}</div>
+                  </div>
+                </div>
+                <Link
+                  href={checkoutHref}
+                  onClick={() => track(EVENTS.preBook, { from: 'cart', total })}
+                  className="inline-flex items-center gap-2 label text-[11px] font-semibold px-5 h-11 btn-pop bg-exit-red text-white hover:bg-exit-crimson transition-colors shrink-0"
+                >
+                  PRE-BOOK <ArrowRight size={15} />
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </SiteShell>
   )
 }
